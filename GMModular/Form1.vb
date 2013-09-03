@@ -8,6 +8,8 @@ Public Class Form1
     End Sub
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        cleanUpProject()
+
         ' Create an instance of the open file dialog box.
         Dim openFileDialog1 As OpenFileDialog = New OpenFileDialog
 
@@ -56,13 +58,18 @@ Public Class Form1
                 Dim gmxFile As FileInfo
 
                 For Each gmxFile In gmxArr
-                    MessageBox.Show("Found GMX File: " + gmxFile.FullName)
-
-                Next gmxFile
+                    'Fetch parent directory name of GMX file (in case 2 GMX's have the same name.
+                    Dim directoryName As String = Path.GetDirectoryName(gmxFile.FullName)
+                    Dim parentName As String = Path.GetFileName(directoryName)
+                    submoduleListBox.Items.Add(parentName + "/" + gmxFile.Name)
+                Next (gmxFile)
             Next dir
 
         End If
     End Sub
 
+    Private Sub cleanUpProject()
+        submoduleListBox.Items.Clear()
+    End Sub
 
 End Class
