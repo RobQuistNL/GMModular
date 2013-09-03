@@ -1,0 +1,12 @@
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\bin\Debug\GMModular.exe
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\bin\Debug\GMModular.pdb
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\bin\Debug\GMModular.xml
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\obj\x86\Debug\GMModular.Form1.resources
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\obj\x86\Debug\GMModular.Resources.resources
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\obj\x86\Debug\GMModular.vbproj.GenerateResource.Cache
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\obj\x86\Debug\GMModular.exe
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\obj\x86\Debug\GMModular.xml
+C:\Users\robkamer\AppData\Local\Temporary Projects\GMModular\obj\x86\Debug\GMModular.pdb
+G:\GMSTUDIO\GIT\GMModular\GMModular\obj\x86\Debug\GMModular.exe
+G:\GMSTUDIO\GIT\GMModular\GMModular\obj\x86\Debug\GMModular.xml
+G:\GMSTUDIO\GIT\GMModular\GMModular\obj\x86\Debug\GMModular.pdb
