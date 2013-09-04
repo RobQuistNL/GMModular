@@ -50,7 +50,7 @@ Public Class Form1
 
         If (My.Computer.FileSystem.DirectoryExists(submoduleFolder) = True) Then
             'Loop through the submodule folder to search for GMX files.
-
+            writeXMLButton.Enabled = True
             Dim di As New DirectoryInfo(submoduleFolder)
             Dim diArr As DirectoryInfo() = di.GetDirectories()
             Dim i As Integer = 0
@@ -67,6 +67,7 @@ Public Class Form1
                     Dim parentName As String = Path.GetFileName(directoryName)
                     submoduleListBox.Items.Add("", "check")
                     submoduleListBox.Items(i).SubItems.Add(parentName + "/" + gmxFile.Name)
+                    submoduleListBox.Items(i).ToolTipText = gmxFile.FullName
                     i = i + 1
                 Next (gmxFile)
             Next dir
@@ -91,9 +92,35 @@ Public Class Form1
         settings.Indent = True
         Dim XmlWrt As XmlWriter = XmlWriter.Create(filename, settings)
 
+        With XmlWrt
+            .WriteStartDocument()
+            .WriteComment("This is a GMModular file. Please do not mess around with it, as it may f*ck up your GMX project. Yeah I just said the F-word. So what? We're all programmers.")
+
+            ' Write the root element.
+            .WriteStartElement("installedmodules")
+
+            Dim submoduleitem As ListViewItem
+            For Each submoduleitem In submoduleListBox.Items
+                .WriteStartElement("module")
+                .WriteStartElement("location")
+                .WriteString(submoduleitem.ToolTipText)
+                .WriteEndElement()
+                .WriteEndElement()
+            Next submoduleitem
+
+            .WriteEndElement() 'installed modules
+
+            ' Close the XmlTextWriter.
+            .WriteEndDocument()
+            .Close()
+
+        End With
 
 
     End Sub
 
 
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles writeXMLButton.Click
+        writeGMM(projectFolderTextbox.Text + "\submodules\modules.gmm")
+    End Sub
 End Class
