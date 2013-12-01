@@ -3,17 +3,56 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
+  <datafiles number="1" name="datafiles">
+    <datafile>
+      <name>mod2_favicon.ico</name>
+      <exists>-1</exists>
+      <size>9662</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>favicon.ico</filename>
+    </datafile>
+  </datafiles>
   <NewExtensions/>
-  <sounds name="sound"/>
-  <sprites name="sprites"/>
-  <backgrounds name="background"/>
-  <paths name="paths"/>
+  <sounds name="sound">
+    <sound>sound\snd_mod2_alarm</sound>
+  </sounds>
+  <sprites name="sprites">
+    <sprite>sprites\spr_mod2_spr</sprite>
+  </sprites>
+  <backgrounds name="background">
+    <background>background\bak_mod2_modern_art</background>
+  </backgrounds>
+  <paths name="paths">
+    <path>paths\path_mod2</path>
+  </paths>
   <scripts name="scripts">
-    <script>scripts\scr_mod2_script.gml</script>
+    <script>scripts\scr_mod2.gml</script>
   </scripts>
   <shaders name="shaders">
-    <shader type="GLSLES">shaders\mod2_shader.shader</shader>
+    <shader type="GLSLES">shaders\shdr_mod2.shader</shader>
   </shaders>
+  <fonts name="fonts">
+    <font>fonts\fnt_mod2</font>
+  </fonts>
+  <objects name="objects">
+    <object>objects\obj_mod2</object>
+  </objects>
+  <timelines name="timelines">
+    <timeline>timelines\tl_mod2</timeline>
+  </timelines>
+  <rooms name="rooms">
+    <room>rooms\rm_mod2</room>
+  </rooms>
   <help>
     <rtf>help.rtf</rtf>
   </help>
