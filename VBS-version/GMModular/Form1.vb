@@ -89,6 +89,9 @@ Public Class Form1
     End Function
 
     Private Function getAssets(ByVal xmlString As String)
+
+        Dim document As XDocument = XDocument
+
         Using reader As XmlReader = XmlReader.Create(New StringReader(xmlString))
         Dim ws As XmlWriterSettings = New XmlWriterSettings()
         ws.Indent = True
