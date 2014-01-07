@@ -1,6 +1,10 @@
+.project
+.idea
+output/*
+
 #ignore thumbnails created by windows
-GMModular/bin/Debug/*
-GMModular/obj/x86/Debug/*
+GMModular/VBS-version/bin/Debug/*
+GMModular/VBS-version/obj/x86/Debug/*
 
 Thumbs.db
 #Ignore files build by Visual Studio
