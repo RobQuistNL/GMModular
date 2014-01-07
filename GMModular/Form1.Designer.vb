@@ -31,14 +31,15 @@ Partial Class Form1
         Me.projectFolderTextbox = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.submoduleListBox = New System.Windows.Forms.ListView()
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.check = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.projectfile = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.writeXMLButton = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -101,12 +102,6 @@ Partial Class Form1
         Me.submoduleListBox.UseCompatibleStateImageBehavior = False
         Me.submoduleListBox.View = System.Windows.Forms.View.Details
         '
-        'ImageList1
-        '
-        Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
-        Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
-        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
-        '
         'check
         '
         Me.check.Text = ""
@@ -117,6 +112,12 @@ Partial Class Form1
         Me.projectfile.Tag = ""
         Me.projectfile.Text = "Project file"
         Me.projectfile.Width = 405
+        '
+        'ImageList1
+        '
+        Me.ImageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit
+        Me.ImageList1.ImageSize = New System.Drawing.Size(16, 16)
+        Me.ImageList1.TransparentColor = System.Drawing.Color.Transparent
         '
         'Label3
         '
@@ -160,18 +161,29 @@ Partial Class Form1
         'writeXMLButton
         '
         Me.writeXMLButton.Enabled = False
-        Me.writeXMLButton.Location = New System.Drawing.Point(182, 421)
+        Me.writeXMLButton.Location = New System.Drawing.Point(440, 421)
         Me.writeXMLButton.Name = "writeXMLButton"
-        Me.writeXMLButton.Size = New System.Drawing.Size(75, 23)
+        Me.writeXMLButton.Size = New System.Drawing.Size(120, 23)
         Me.writeXMLButton.TabIndex = 11
-        Me.writeXMLButton.Text = "Write XML"
+        Me.writeXMLButton.Text = "Save module settings"
         Me.writeXMLButton.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Enabled = False
+        Me.Button2.Location = New System.Drawing.Point(182, 421)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(252, 23)
+        Me.Button2.TabIndex = 12
+        Me.Button2.Text = "SYNCHRONIZE MODULES TO PROJECT"
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(572, 456)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.writeXMLButton)
         Me.Controls.Add(Me.submoduleListBox)
         Me.Controls.Add(Me.projectFolderTextbox)
@@ -205,5 +217,6 @@ Partial Class Form1
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents GroupBox1 As System.Windows.Forms.GroupBox
     Friend WithEvents writeXMLButton As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 
 End Class
