@@ -1,5 +1,5 @@
 <?php
-require(__DIR__ . "/scripts/init.php");
+require("./scripts/init.php");
 
 CLI::line('Welcome to the GMModular application.');
 CLI::line('version ' . VERSION);
