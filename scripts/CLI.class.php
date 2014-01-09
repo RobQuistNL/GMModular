@@ -1,6 +1,9 @@
 <?php
 
 class CLI {
+
+    private $colors;
+
     /**
      * Get a line from the CLI
      * @param string $default
@@ -17,11 +20,38 @@ class CLI {
         return trim($line);
     }
 
+    /**
+     * Echo a string
+     * @param string $string
+     * @param bool $nl
+     */
     public static function line($string = '', $nl = true) {
         echo $string;
         if ($nl) {
             echo NL;
         }
+    }
+
+    /**
+     * Throw a warning
+     * @param string $string
+     */
+    public static function warning($string = '') {
+        self::line(
+            Color::str('WARNING: ' . $string, "yellow", "")
+        );
+    }
+
+    /**
+     * Throw fatal error. Also kills the script.
+     * @param string $string
+     */
+    public static function fatal($string = '') {
+        self::line(
+            Color::str('UNRECOVERABLE FATAL ERROR: ' . $string, "light_cyan", "red")
+        );
+        self::line('For help, execute "gmmodular --help"');
+        die;
     }
 
 }
