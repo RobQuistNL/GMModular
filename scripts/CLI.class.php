@@ -54,6 +54,29 @@ class CLI {
         die;
     }
 
+    /**
+     * Verbose message
+     * @param string $string
+     */
+    public static function verbose($string = '') {
+        if (VERBOSE) {
+            self::line(
+                Color::str('V: ' . $string, "light_cyan", "")
+            );
+        }
+    }
+
+    /**
+     * Debug message
+     * @param string $string
+     */
+    public static function debug($string = '') {
+        if (DEBUG) {
+            self::line(
+                Color::str('DEBUG: ' . $string, "cyan", "")
+            );
+        }
+    }
 }
 
 ?>

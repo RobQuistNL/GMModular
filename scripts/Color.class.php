@@ -39,6 +39,10 @@ class Color {
      * @return string
      */
     public static function str($string, $foreground_color = null, $background_color = null) {
+        if (!COLOR) {
+            return $string;
+        }
+
         $colored_string = "";
 
         // Check if given foreground color found
