@@ -13,19 +13,19 @@ The basic usage of the script is shown if you run it without arguments, or if yo
     #Example:
     php gmmodular.php --help
 
-## Cyqwin
+### Cyqwin
 1. Download cygwin from here; http://cygwin.com/install.html
 2. If you have PHP installed on your windows machine, you can skip the next step.
 3. When installing, make sure you have selected all the "PHP" related packages. This installs PHP for CygWin.
 
-## Linux
+### Linux
 1. Make sure you have PHP binaries installed. This is easily done by using yum or aptitude. Examples;
 
     apt-get install php5
 
     yum install php5
 
-## Mac OS
+### Mac OS
 1. I have no idea to be honest. Be sure to have installed PHP on your mac so you can use it, then run the script with PHP.
 
 Adding submodules
@@ -38,6 +38,6 @@ This script copies all assets and asset-settings from your submodules into speci
 
 BE WARNED
 =========
-As this script edits your main project, just be sure to ''ALWAYS HAVE A BACKUP''. Using version control software is the best way. The other way is to copy your project to DropBox, USB, DVD, CD, 3,5" floppies, Tape, ZIP-Drive... or whatever you'd like.
+As this script edits your main project, just be sure to **ALWAYS HAVE A BACKUP**. Using version control software is the best way. The other way is to copy your project to DropBox, USB, DVD, CD, 3,5" floppies, Tape, ZIP-Drive... or whatever you'd like.
 
-Just be aware that this script MAY NOT be fault-proof and MAY mess up your project. May this ever happen, please leave an issue in the issuetracker.
+Just be aware that this script _MAY NOT_ be fault-proof and _MAY_ mess up your project. May this ever happen, please leave an issue in the issuetracker.
