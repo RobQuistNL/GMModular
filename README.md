@@ -13,20 +13,20 @@ The basic usage of the script is shown if you run it without arguments, or if yo
     #Example:
     php gmmodular.php --help
 
-''Cyqwin''
-# Download cygwin from here; http://cygwin.com/install.html
-# If you have PHP installed on your windows machine, you can skip the next step.
-# When installing, make sure you have selected all the "PHP" related packages. This installs PHP for CygWin.
+## Cyqwin
+1. Download cygwin from here; http://cygwin.com/install.html
+2. If you have PHP installed on your windows machine, you can skip the next step.
+3. When installing, make sure you have selected all the "PHP" related packages. This installs PHP for CygWin.
 
-''Linux''
-# Make sure you have PHP binaries installed. This is easily done by using yum or aptitude. Examples;
+## Linux
+1. Make sure you have PHP binaries installed. This is easily done by using yum or aptitude. Examples;
 
     apt-get install php5
 
     yum install php5
 
-''Mac OS''
-# I have no idea to be honest. Be sure to have installed PHP on your mac so you can use it, then run the script with PHP.
+## Mac OS
+1. I have no idea to be honest. Be sure to have installed PHP on your mac so you can use it, then run the script with PHP.
 
 Adding submodules
 =================
