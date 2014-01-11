@@ -10,8 +10,10 @@ The best way to execute this script is by using cygwin on Windows, or just use t
 
 The basic usage of the script is shown if you run it without arguments, or if you run it with the "--help" flag.
 
-    #Example:
-    php gmmodular.php --help
+```
+#Example:
+php gmmodular.php --help
+```
 
 ### Cyqwin
 1. Download cygwin from here; http://cygwin.com/install.html
@@ -21,12 +23,13 @@ The basic usage of the script is shown if you run it without arguments, or if yo
 ### Linux
 1. Make sure you have PHP binaries installed. This is easily done by using yum or aptitude. Examples;
 
+```
+apt-get install php5
+```
 
-    apt-get install php5
-
-
-    yum install php5
-
+```
+yum install php5
+```
 
 ### Mac OS
 1. I have no idea to be honest. Be sure to have installed PHP on your mac so you can use it, then run the script with PHP.
