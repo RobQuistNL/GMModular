@@ -67,6 +67,16 @@ class CLI {
     }
 
     /**
+     * Notice message
+     * @param string $string
+     */
+    public static function notice($string = '') {
+        self::line(
+            Color::str('NOTICE: ' . $string, "light_cyan", "")
+        );
+    }
+
+    /**
      * Debug message
      * @param string $string
      */

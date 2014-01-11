@@ -6,37 +6,29 @@ require "./scripts/checkArguments.php";
 
 showWelcome();
 
-/** Directory checks */
-CLI::verbose('Checking if "' . $projectRoot . '" is a directory.');
-if (!is_dir($projectRoot)) {
-    CLI::fatal($projectRoot . ' is not a directory.');
-}
+$GMModular = new GMModular();
+$GMModular->setProjectRoot($projectRoot);
 
-CLI::verbose('Checking if "' . $projectRoot . '" is writeable.');
-if (!is_writeable($projectRoot)) {
-    if (DRYRUN) {
-        CLI::warning($projectRoot . ' is not writable, but --dry-run flag was set so we will continue.');
-    } else {
-        CLI::fatal($projectRoot . ' is not writeable.');
+require "./scripts/setupPaths.php";
+
+$GMModular->setProjectFile($projectFile);
+$GMModular->setSubmoduleFolder($submoduleFolder);
+
+
+$GMModularFile = new GMModularFile($submoduleFile);
+if (false == $gmmfile) {
+    if (CLI::getLine('Since there was no module file found, would you like to create a new one? [y/n]', 'n') == 'n') {
+        CLI::line('Not creating file. We can\'t continue!');
+        die;
     }
+    $GMModularFile->save();
+} else {
+    CLI::verbose('Loading module file in to gmmodular instance');
+    $GMModularFile = $GMModularFile->load();
 }
 
-CLI::debug('Opening "' . $projectRoot . '".');
-CLI::verbose('Contents of "' . $projectRoot . '":');
-if ($handle = opendir($projectRoot)) {
-    /* This is the correct way to loop over the directory. */
-    while (false !== ($entry = readdir($handle))) {
-        CLI::verbose('    ' . $entry);
-    }
-    closedir($handle);
-}
+echo 'GMMODULAR:';
+var_dump($GMModular);
 
-
-
-/** Testing crap */
-CLI::line();
-if (CLI::getLine('Testquestion. Quit? [y/n]', 'y') == 'y') {
-    CLI::line('Phew. Then this will be the end of it.');
-    die;
-};
-CLI::line('No quit!');
+echo 'GMMODULARFILE:';
+var_dump($GMModularFile);

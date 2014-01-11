@@ -15,7 +15,7 @@ The basic usage of the script is shown if you run it without arguments, or if yo
 php gmmodular.php --help
 ```
 
-### Cyqwin
+### Cyqwin / Windows
 1. Download cygwin from here; http://cygwin.com/install.html
 2. If you have PHP installed on your windows machine, you can skip the next step.
 3. When installing, make sure you have selected all the "PHP" related packages. This installs PHP for CygWin.

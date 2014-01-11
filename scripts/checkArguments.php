@@ -37,4 +37,4 @@ if ($argv[1] == '--help') {
     showWelcome();
     showUsage(false);
 }
-$projectRoot = $argv[1];
+$projectRoot = trim($argv[1], '/');
