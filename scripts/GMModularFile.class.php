@@ -13,9 +13,14 @@ class GMModularFile {
     private $file;
 
     /**
+     * @var string The last time the file was saved
+     */
+    private $lastEdited;
+
+    /**
      * @var Array of all installed submodules (as modules.gmm tells us)
      */
-    private $installedSubmodules;
+    private $installedSubmodules = array();
 
     /**
      * Constructor. Optionally also sets the filename
@@ -53,6 +58,8 @@ class GMModularFile {
         if (null == $this->file) {
             throw new Exception('No module file set!');
         }
+
+        $this->lastEdited = time();
         CLI::verbose('Saving serialized object to ' . $this->file . '');
         if (DRYRUN) {
             CLI::notice('DRY-RUN IN EFFECT. ' . $this->file . ' has not been written to.');

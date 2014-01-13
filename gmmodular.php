@@ -27,8 +27,8 @@ if (false == $gmmfile) {
     $GMModularFile = $GMModularFile->load();
 }
 
-echo 'GMMODULAR:';
-var_dump($GMModular);
-
-echo 'GMMODULARFILE:';
-var_dump($GMModularFile);
+//This one returns us with the following variables:
+$MDLIST_notInstalled = array();
+$MDLIST_removed = array();
+$MDLIST_notSynced = array();
+require "./scripts/checkModuleSync.php";

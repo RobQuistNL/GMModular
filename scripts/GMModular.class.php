@@ -27,12 +27,13 @@ class GMModular {
      */
     public function addAvailableModule($filename)
     {
-        if (isset($this->availableSubmodules[$filename])) {
-            CLI::debug('Tried to add double available module ' . $filename . ' - skipping.');
+        $pointer = basename($filename, '.project.gmx');
+        if (isset($this->availableSubmodules[$pointer])) {
+            CLI::debug('Tried to add double available module ' . $pointer . ' - skipping.');
             return;
         }
-        $this->availableSubmodules[$filename] = new Submodule($filename);
-        $this->availableSubmodules[$filename]->type = 'available';
+        $this->availableSubmodules[$pointer] = new Submodule($filename);
+        $this->availableSubmodules[$pointer]->type = 'available';
     }
 
     /**
@@ -45,14 +46,6 @@ class GMModular {
     public function getAvailableSubmodules()
     {
         return $this->availableSubmodules;
-    }
-
-    /**
-     * @return array
-     */
-    public function getInstalledSubmodules()
-    {
-        return $this->installedSubmodules;
     }
 
     /**
