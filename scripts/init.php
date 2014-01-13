@@ -13,6 +13,7 @@ if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'embed') {
 require_once "Color.class.php";
 require_once "CLI.class.php";
 require_once "GMModular.class.php";
+require_once "GMXAsset.class.php";
 require_once "GMModularFile.class.php";
 require_once "Submodule.class.php";
 

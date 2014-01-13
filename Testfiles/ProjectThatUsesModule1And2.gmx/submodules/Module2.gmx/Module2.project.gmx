@@ -34,6 +34,7 @@
   </backgrounds>
   <paths name="paths">
     <path>paths\path_mod2</path>
+    <path>paths\path_secondmod2path</path>
   </paths>
   <scripts name="scripts">
     <script>scripts\scr_mod2.gml</script>
@@ -46,6 +47,9 @@
   </fonts>
   <objects name="objects">
     <object>objects\obj_mod2</object>
+    <objects name="Group for Objecst">
+      <object>objects\obj_my_object_lawl</object>
+    </objects>
   </objects>
   <timelines name="timelines">
     <timeline>timelines\tl_mod2</timeline>

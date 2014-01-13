@@ -40,10 +40,11 @@ class GMModular {
     public function installModule(Submodule $submodule, GMModularFile $GMModularFile)
     {
         CLI::verbose('Starting installation of module ' . $submodule);
-        $moduleDocument = $submodule->getDom();
         $projectDocument = $this->getDom();
 
-        var_dump($moduleDocument);
+        $submoduleAssets = $submodule->getAssets();
+
+        var_dump($submoduleAssets);
         var_dump($projectDocument);
         die;
         //$GMModular->installModule($MDLIST_notInstalled[$selected-1], $GMModularFile);
