@@ -9,11 +9,11 @@ foreach ($GMModular->getAvailableSubmodules() as $available) {
 }
 
 if (count($MDLIST_notInstalled) > 0) {
-    CLI::notice('You have ' . count($MDLIST_notInstalled) . ' uninstalled module(s)!');
+    CLI::line('You have ' . count($MDLIST_notInstalled) . ' uninstalled module(s)!');
     $i = 0;
     foreach ($MDLIST_notInstalled as $tmpstr) {
         $i++;
-        CLI::notice('   #' . $i . ' - ' . $tmpstr);
+        CLI::line('   #' . $i . ' - ' . $tmpstr);
     }
 }
 
@@ -27,11 +27,11 @@ foreach ($GMModularFile->getInstalledSubmodules() as $installed) {
 }
 
 if (count($MDLIST_removed) > 0) {
-    CLI::notice('You have ' . count($MDLIST_removed) . ' deleted module(s)!');
+    CLI::line('You have ' . count($MDLIST_removed) . ' deleted module(s)!');
     $i = 0;
     foreach ($MDLIST_removed as $tmpstr) {
         $i++;
-        CLI::notice('   #' . $i . ' - ' . $tmpstr);
+        CLI::line('   #' . $i . ' - ' . $tmpstr);
     }
 }
 
@@ -50,10 +50,10 @@ foreach ($GMModularFile->getInstalledSubmodules() as $installed) {
 }
 
 if (count($MDLIST_notSynced) > 0) {
-    CLI::notice('You have ' . count($MDLIST_notSynced) . ' out-of-sync module(s)!');
+    CLI::line('You have ' . count($MDLIST_notSynced) . ' out-of-sync module(s)!');
     $i = 0;
     foreach ($MDLIST_notSynced as $tmpstr) {
         $i++;
-        CLI::notice('   #' . $i . ' - ' . $tmpstr);
+        CLI::line('   #' . $i . ' - ' . $tmpstr);
     }
 }

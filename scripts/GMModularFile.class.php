@@ -1,5 +1,9 @@
 <?php
 class GMModularFile {
+    /**
+     * @todo I'd rather use a trait. But traits are only supported from PHP5.4+, so we'll stick to this solution for
+     * compatibility reasons.
+     */
 
     /**
      * The GMModular version this file was made with
@@ -70,7 +74,6 @@ class GMModularFile {
 
         return $this;
     }
-
 
     /**
      * @param string $file

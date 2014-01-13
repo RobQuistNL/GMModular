@@ -83,8 +83,6 @@ if ($handle = opendir($submoduleFolder)) {
     closedir($handle);
 }
 
-
-
 //$test = new DOMDocument();
 //$test->load($projectFile);
 //var_dump($test);

@@ -1,15 +1,25 @@
 <?php
 class GMModular {
+    /**
+     * @todo I'd rather use a trait for the File / DOMDocument stuff...
+     * But traits are only supported from PHP5.4+, so we'll stick to this double-coding solution for
+     * compatibility reasons.
+     */
+
+    /**
+     * @var string
+     */
+    private $file;
+
+    /**
+     * @var DOMDocument
+     */
+    private $dom = null;
 
     /**
      * @var The projects rootfolder.
      */
     private $projectRoot;
-
-    /**
-     * @var The main projects GMX file
-     */
-    private $projectFile;
 
     /**
      * @var Absolute path to folder containing submodules
@@ -20,6 +30,24 @@ class GMModular {
      * @var Array of all available submodules (as the folders tell us)
      */
     private $availableSubmodules;
+
+    /**
+     * Merge the given submodule into our loaded main project.
+     * We will also add the submodule to the GMModularFile, and save it.
+     * @param Submodule $submodule
+     * @param GMModularFile $GMModularFile
+     */
+    public function installModule(Submodule $submodule, GMModularFile $GMModularFile)
+    {
+        CLI::verbose('Starting installation of module ' . $submodule);
+        $moduleDocument = $submodule->getDom();
+        $projectDocument = $this->getDom();
+
+        var_dump($moduleDocument);
+        var_dump($projectDocument);
+        die;
+        //$GMModular->installModule($MDLIST_notInstalled[$selected-1], $GMModularFile);
+    }
 
     /**
      * Add an available submodule to our array
@@ -51,17 +79,17 @@ class GMModular {
     /**
      * @param string $projectFile
      */
-    public function setProjectFile($projectFile)
+    public function setFile($file)
     {
-        $this->projectFile = $projectFile;
+        $this->file = $file;
     }
 
     /**
      * @return string
      */
-    public function getProjectFile()
+    public function getFile()
     {
-        return $this->projectFile;
+        return $this->file;
     }
 
     /**
@@ -101,6 +129,45 @@ class GMModular {
     public function getSubmoduleFolder()
     {
         return $this->submoduleFolder;
+    }
+
+
+    /**
+     * Get / lazy load the DOMDocument
+     */
+    public function getDom()
+    {
+        if (null == $this->dom) {
+            $this->dom = $this->loadDocument();
+        }
+
+        return $this->dom;
+    }
+
+    /**
+     * Set our DOMDocument
+     * @param DOMDocument $dom
+     */
+    public function setDom(DOMDocument $dom)
+    {
+        $this->dom = $dom;
+    }
+
+    /**
+     * Load $this->file as a DOMDocument
+     */
+    public function loadDocument()
+    {
+        if (!is_file($this->getFile())) {
+            throw new Exception('"' . $this->getFile() . '" is not a file!');
+        }
+        $doc = new DOMDocument();
+        try {
+            $doc->load($this->getFile());
+        } catch (Exception $e) {
+            throw new Exception('Loading ' . $this->getFile() . ' was not possible. Is it corrupt, or no XML?');
+        }
+        return $doc;
     }
 
 }

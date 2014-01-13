@@ -13,9 +13,16 @@ function showUsage($wrongUsage = true) {
     cli::line();
     cli::line(' Options:');
     cli::line('     -d                   Debug');
+    cli::line('     -D                   PHP-Debug (don\'t suppress PHP errors)');
     cli::line('     -v                   Verbose');
     cli::line('     --dry-run            Do not touch files');
     cli::line('     --no-color           Do not use colours in feedback');
+    cli::line('     --sync               Synchronize all. This;');
+    cli::line('          - Installs all new found modules');
+    cli::line('          - Uninstalls all removed modules');
+    cli::line('          - Synchronizes all installed modules');
+    cli::line();
+    cli::line('     -S                   Same as --sync');
     die;
 }
 
@@ -30,4 +37,30 @@ function showWelcome() {
     CLI::line('================================================================================');
     CLI::line('================================================================================');
     CLI::line();
+}
+
+/**
+ * Show a menu for the user to choose from
+ */
+function showMenu() {
+    CLI::verbose('Showing main menu');
+    CLI::line();
+    CLI::line('Please select an option:');
+    CLI::line('    ' . Color::str('1', 'cyan') . '. Install a module');
+    CLI::line('    ' . Color::str('2', 'cyan') . '. Uninstall a module');
+    CLI::line('    ' . Color::str('3', 'cyan') . '. Synchronize a module');
+    CLI::line('    ' . Color::str('4', 'cyan') . '. Quit');
+    return (int) CLI::getLine('Option number: [1-4]', '0')-1;
+}
+
+function getMenuItem($name, $array) {
+    CLI::line(Color::str(strtoupper($name) . ' MENU', 'light_green'));
+    CLI::line('Available modules to ' . $name . ':');
+    CLI::line('    ' . Color::str('0', 'cyan') . ' -CANCEL-');
+    $i = 1;
+    foreach ($array as $item) {
+        CLI::line('    ' . Color::str($i, 'cyan') . ' [' . $item . ']');
+        $i++;
+    }
+    return CLI::getLine('Select module to install [0-' . count($array) . ']', 0);
 }

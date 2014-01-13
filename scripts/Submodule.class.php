@@ -1,12 +1,20 @@
 <?php
 class Submodule {
 
-    public $type; //available or installed
+    /**
+     * @var string
+     */
+    private $file;
 
     /**
-     * @var string The name of the GMX file
+     * @var DOMDocument
      */
-    private $filename;
+    private $dom = null;
+
+    /**
+     * @var string Type of module - available or installed
+     */
+    public $type;
 
     /**
      * @var string The wole path of the project
@@ -20,7 +28,7 @@ class Submodule {
 
     public function __construct($filename) {
         CLI::verbose('New instance of Submodule spawned (File: ' . $filename . ')');
-        $this->filename = $filename;
+        $this->setFile($filename);
         $this->filepath = pathinfo($filename, PATHINFO_DIRNAME);
         $this->generateHash();
     }
@@ -30,8 +38,9 @@ class Submodule {
      */
     public function generateHash()
     {
-        //@todo this isn't really efficient... But its precise!
-        $hash = base64_encode($this->filename);
+        //@todo Check out what would be a good way to determine if something has changes, and save it as a comparable string.
+
+        $hash = $this->getFile();
 
         $objects = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($this->filepath),
@@ -44,18 +53,19 @@ class Submodule {
             if (false !== strpos($name, '/Configs/')) {
                 continue; //Skip Configs folder, since we're not including that in module management.
             }
-            //$hash .= '-' . md5(file_get_contents($name)); //Very good, but very slow
-            $hash .= filemtime($name) . '-';
+            $hash .= filemtime($name);
         }
-        $this->setHash($hash);
+
+        //SHA1 is very unlikely to collide.
+        $this->setHash(sha1($hash));
     }
+
 
     /**
      * @param $hash
      */
     public function setHash($hash)
     {
-        //@todo find a good way to compress this data. gzip doesn't seem to work on windows by default
         $this->hash = $hash;
     }
 
@@ -67,8 +77,75 @@ class Submodule {
         return $this->hash;
     }
 
+    /**
+     * Get / lazy load the DOMDocument
+     */
+    public function getDom()
+    {
+        if (null == $this->dom) {
+            $this->dom = $this->loadDocument();
+        }
+
+        return $this->dom;
+    }
+
+    /**
+     * Set our DOMDocument
+     * @param DOMDocument $dom
+     */
+    public function setDom(DOMDocument $dom)
+    {
+        $this->dom = $dom;
+    }
+
+    /**
+     * Load $this->file as a DOMDocument
+     */
+    public function loadDocument()
+    {
+        if (!is_file($this->getFile())) {
+            throw new Exception('"' . $this->getFile() . '" is not a file!');
+        }
+        $doc = new DOMDocument();
+        try {
+            $doc->load($this->getFile());
+        } catch (Exception $e) {
+            throw new Exception('Loading ' . $this->getFile() . ' was not possible. Is it corrupt, or no XML?');
+        }
+        return $doc;
+    }
+
+    /**
+     * @param string $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * When used as string, return our name
+     * @return string
+     */
     public function __toString()
     {
-        return basename($this->filename, '.project.gmx');
+        return $this->getName();
+    }
+
+    /**
+     * Return real name of module
+     * @return string
+     */
+    public function getName()
+    {
+        return basename($this->getFile(), '.project.gmx');
     }
 }
