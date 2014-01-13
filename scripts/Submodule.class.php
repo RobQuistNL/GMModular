@@ -180,13 +180,6 @@ class Submodule {
 
             if ($item->hasChildNodes()) {
                 $this->getchildNodes($item->childNodes, $name, $type);
-
-                /*$newDocStr = $item->ownerDocument->saveXML($item);
-                $newDoc = new DOMDocument();
-                $newDoc->loadXML($newDocStr);
-                $xp = new DOMXPath($newDoc);
-                var_dump($newDocStr);
-                $this->getChildNodes($xp->query('/' . $name), $name, $type);*/
             }
         }
     }
@@ -200,7 +193,6 @@ class Submodule {
         $this->loadDocument(); //make sure the document is loaded in
         $xpath = new DOMXpath($this->getDom());
 
-        //Sounds
         $this->getChildNodes($xpath->query('/assets/sounds'), 'sound', GMXAsset::T_SOUND);
         $this->getChildNodes($xpath->query('/assets/sprites'), 'sprite', GMXAsset::T_SPRITE);
         $this->getChildNodes($xpath->query('/assets/backgrounds'), 'background', GMXAsset::T_BACKGROUND);
@@ -215,8 +207,6 @@ class Submodule {
         foreach ($this->getAssets() as $t) {
             CLI::verbose('ASSET: [TYPE:'.$t->getType().'] ' . $t->getLocation());
         }
-
-        die;
     }
 
     /**
