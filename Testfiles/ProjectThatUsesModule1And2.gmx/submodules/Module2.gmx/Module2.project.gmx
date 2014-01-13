@@ -48,7 +48,15 @@
   <objects name="objects">
     <object>objects\obj_mod2</object>
     <objects name="Group for Objecst">
-      <object>objects\obj_my_object_lawl</object>
+      <objects name="group">
+        <objects name="group2">
+          <objects name="group3">
+            <object>objects\obj_recurse3</object>
+          </objects>
+        </objects>
+        <object>objects\obj_recurse2</object>
+      </objects>
+      <object>objects\obj_my_object_lawlrecurse1</object>
     </objects>
   </objects>
   <timelines name="timelines">

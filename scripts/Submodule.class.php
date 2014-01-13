@@ -173,17 +173,20 @@ class Submodule {
     {
         for ($i = 0; $i < $nodes->length; $i++) {
             $item = $nodes->item($i);
-
-            echo $item->childNodes->length;
-            if ($item->childNodes->length <= 1) {
+            if (!$item instanceof DOMText && $item->tagName == $name) {
+                CLI::verbose('  Found ' . $name . ' asset.');
                 $this->addAsset(new GMXAsset($item, $type));
-            } else {
-                $newDocStr = $item->ownerDocument->saveXML($item);
+            }
+
+            if ($item->hasChildNodes()) {
+                $this->getchildNodes($item->childNodes, $name, $type);
+
+                /*$newDocStr = $item->ownerDocument->saveXML($item);
                 $newDoc = new DOMDocument();
                 $newDoc->loadXML($newDocStr);
                 $xp = new DOMXPath($newDoc);
                 var_dump($newDocStr);
-                $this->getChildNodes($xp->query('/' . $name), $name, $type);
+                $this->getChildNodes($xp->query('/' . $name), $name, $type);*/
             }
         }
     }
@@ -198,81 +201,17 @@ class Submodule {
         $xpath = new DOMXpath($this->getDom());
 
         //Sounds
-        $this->getChildNodes($xpath->query('/assets/sounds/sound'), 'sound', GMXAsset::T_SOUND);
-        $this->getChildNodes($xpath->query('/assets/sprites/sprite'), 'sprite', GMXAsset::T_SPRITE);
-        $this->getChildNodes($xpath->query('/assets/paths/path'), 'path', GMXAsset::T_PATH);
-        $this->getChildNodes($xpath->query('/assets/objects/object'), 'object', GMXAsset::T_OBJECT);
+        $this->getChildNodes($xpath->query('/assets/sounds'), 'sound', GMXAsset::T_SOUND);
+        $this->getChildNodes($xpath->query('/assets/sprites'), 'sprite', GMXAsset::T_SPRITE);
+        $this->getChildNodes($xpath->query('/assets/backgrounds'), 'background', GMXAsset::T_BACKGROUND);
+        $this->getChildNodes($xpath->query('/assets/paths'), 'path', GMXAsset::T_PATH);
+        $this->getChildNodes($xpath->query('/assets/scripts'), 'script', GMXAsset::T_SCRIPT);
+        $this->getChildNodes($xpath->query('/assets/shaders'), 'shaders', GMXAsset::T_SHADER);
+        $this->getChildNodes($xpath->query('/assets/fonts'), 'font', GMXAsset::T_FONT);
+        $this->getChildNodes($xpath->query('/assets/objects'), 'object', GMXAsset::T_OBJECT);
+        $this->getChildNodes($xpath->query('/assets/timelines'), 'timeline', GMXAsset::T_TIMELINE);
+        $this->getChildNodes($xpath->query('/assets/rooms'), 'room', GMXAsset::T_ROOM);
 
-/*
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_SOUND);
-            $this->addAsset($asset);
-        }
-
-        //Sprites
-        $nodes = $xpath->query('/assets/sprites/sprite');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_SPRITE);
-            $this->addAsset($asset);
-        }
-
-        //Backgrounds
-        $nodes = $xpath->query('/assets/backgrounds');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_BACKGROUND);
-            $this->addAsset($asset);
-        }
-
-        //paths
-        $nodes = $xpath->query('/assets/paths');
-        for ($i = 0; $i < $nodes->length; $i++) {
-
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_PATH);
-            $this->addAsset($asset);
-        }
-
-        //scripts
-        $nodes = $xpath->query('/assets/scripts');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_SCRIPT);
-            $this->addAsset($asset);
-        }
-
-        //shaders
-        $nodes = $xpath->query('/assets/shaders');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_SHADER);
-            $this->addAsset($asset);
-        }
-
-        //fonts
-        $nodes = $xpath->query('/assets/fonts');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_FONT);
-            $this->addAsset($asset);
-        }
-
-        //objects
-        $nodes = $xpath->query('/assets/objects');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_OBJECT);
-            $this->addAsset($asset);
-        }
-
-        //timelines
-        $nodes = $xpath->query('/assets/timelines');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_TIMELINE);
-            $this->addAsset($asset);
-        }
-
-        //rooms
-        $nodes = $xpath->query('/assets/rooms');
-        for ($i = 0; $i < $nodes->length; $i++) {
-            $asset = new GMXAsset($nodes->item($i), GMXAsset::T_ROOM);
-            $this->addAsset($asset);
-        }
-*/
         foreach ($this->getAssets() as $t) {
             CLI::verbose('ASSET: [TYPE:'.$t->getType().'] ' . $t->getLocation());
         }
