@@ -14,6 +14,7 @@ require_once "Color.class.php";
 require_once "CLI.class.php";
 require_once "GMModular.class.php";
 require_once "GMXAsset.class.php";
+require_once "GMXAssetFolder.class.php";
 require_once "GMModularFile.class.php";
 require_once "Submodule.class.php";
 

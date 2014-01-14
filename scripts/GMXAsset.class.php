@@ -30,7 +30,7 @@ class GMXAsset {
     /**
      * @var DOMElement
      */
-    public $node;
+    private $node;
 
     public function __construct(DOMElement $node = null, $type = null)
     {
@@ -58,6 +58,7 @@ class GMXAsset {
         $return = trim($this->node->textContent); //if there are child nodes (like folders)
         $return = explode("\r", $return);
         $return = trim($return[0]);
+        unset($this->node);
         return $return;
     }
 
