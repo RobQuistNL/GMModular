@@ -48,6 +48,12 @@ class GMModular {
             CLI::debug('Assets found in module ' . $submodule . ':');
             $this->dumpAssets($submoduleAssets);
         }
+
+        //var_dump($submoduleAssets);
+        var_dump($projectDocument);
+        die;
+        //$GMModularFile->installModule($submodule);
+
     }
 
     public function dumpAssets($array, $depth=0)
