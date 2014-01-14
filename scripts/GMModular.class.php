@@ -42,29 +42,22 @@ class GMModular {
         CLI::verbose('Starting installation of module ' . $submodule);
         $projectDocument = $this->getDom();
 
-
-        var_dump($submodule->getAssets());
-
         $submoduleAssets = $submodule->getAssets();
 
-        echo '+MODULES:' . PHP_EOL;
-        $this->dumpAssets($submoduleAssets);
-
-
-        //var_dump($submoduleAssets);
-        //var_dump($projectDocument);
-        die;
-        //$GMModular->installModule($MDLIST_notInstalled[$selected-1], $GMModularFile);
+        if (DEBUG) {
+            CLI::debug('Assets found in module ' . $submodule . ':');
+            $this->dumpAssets($submoduleAssets);
+        }
     }
 
     public function dumpAssets($array, $depth=0)
     {
         foreach ($array as $ass) {
             if ($ass instanceof GMXAssetFolder) {
-                echo str_repeat('   ', $depth+1) . 'L' . $ass->name . PHP_EOL;
+                CLI::debug(str_repeat('   ', $depth+1) . 'L' . $ass->name);
                 $this->dumpAssets($ass->children, $depth+1);
             } else {
-                echo str_repeat('   ', $depth+1) . 'L' . $ass->getLocation() . PHP_EOL;
+                CLI::debug(str_repeat('   ', $depth+1) . 'L' . $ass->getLocation());
             }
         }
     }

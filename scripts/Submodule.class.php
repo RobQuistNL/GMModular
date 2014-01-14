@@ -45,7 +45,8 @@ class Submodule {
      */
     public function generateHash()
     {
-        //@todo Check out what would be a good way to determine if something has changes, and save it as a comparable string.
+        //@todo Check out what would be a good / better way to determine if
+        //something has changes, and save it as a comparable string.
 
         $hash = $this->getFile();
 
@@ -205,27 +206,92 @@ class Submodule {
         CLI::verbose('Started parsing assets of ' . $this->getName());
         $this->loadDocument(); //make sure the document is loaded in
         $xpath = new DOMXpath($this->getDom());
-
-
-        $this->addAsset(new GMXAssetFolder('sounds', $this->getChildNodes($xpath->query('/assets/sounds/*'), 'sound', GMXAsset::T_SOUND)));
-        $this->addAsset(new GMXAssetFolder('sprites', $this->getChildNodes($xpath->query('/assets/sprites/*'), 'sprite', GMXAsset::T_SPRITE)));
-        $this->addAsset(new GMXAssetFolder('backgrounds', $this->getChildNodes($xpath->query('/assets/backgrounds/*'), 'background', GMXAsset::T_BACKGROUND)));
-        $this->addAsset(new GMXAssetFolder('paths', $this->getChildNodes($xpath->query('/assets/paths/*'), 'path', GMXAsset::T_PATH)));
-        $this->addAsset(new GMXAssetFolder('scripts', $this->getChildNodes($xpath->query('/assets/scripts/*'), 'script', GMXAsset::T_SCRIPT)));
-        $this->addAsset(new GMXAssetFolder('shaders', $this->getChildNodes($xpath->query('/assets/shaders/*'), 'shader', GMXAsset::T_SHADER)));
-        $this->addAsset(new GMXAssetFolder('fonts', $this->getChildNodes($xpath->query('/assets/fonts/*'), 'font', GMXAsset::T_FONT)));
-        $this->addAsset(new GMXAssetFolder('objects', $this->getChildNodes($xpath->query('/assets/objects/*'), 'object', GMXAsset::T_OBJECT)));
-        $this->addAsset(new GMXAssetFolder('timelines', $this->getChildNodes($xpath->query('/assets/timelines/*'), 'timeline', GMXAsset::T_TIMELINE)));
-        $this->addAsset(new GMXAssetFolder('rooms', $this->getChildNodes($xpath->query('/assets/rooms/*'), 'room', GMXAsset::T_ROOM)));
-
-        foreach ($this->getAssets() as $t) {
-            //CLI::verbose('ASSET: [TYPE:'.$t->getType().'] ' . $t->getLocation());
-        }
+        //Load in all assets from this module
+        $this->addAsset(new GMXAssetFolder(
+            'sounds',
+            $this->getChildNodes(
+                $xpath->query('/assets/sounds/*'),
+                'sound',
+                GMXAsset::T_SOUND
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'sprites',
+            $this->getChildNodes(
+                $xpath->query('/assets/sprites/*'),
+                'sprite',
+                GMXAsset::T_SPRITE
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'backgrounds',
+            $this->getChildNodes(
+                $xpath->query('/assets/backgrounds/*'),
+                'background',
+                GMXAsset::T_BACKGROUND
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'paths',
+            $this->getChildNodes(
+                $xpath->query('/assets/paths/*'),
+                'path',
+                GMXAsset::T_PATH
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'scripts',
+            $this->getChildNodes(
+                $xpath->query('/assets/scripts/*'),
+                'script',
+                GMXAsset::T_SCRIPT
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'shaders',
+            $this->getChildNodes(
+                $xpath->query('/assets/shaders/*'),
+                'shader',
+                GMXAsset::T_SHADER
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'fonts',
+            $this->getChildNodes(
+                $xpath->query('/assets/fonts/*'),
+                'font',
+                GMXAsset::T_FONT
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'objects',
+            $this->getChildNodes(
+                $xpath->query('/assets/objects/*'),
+                'object',
+                GMXAsset::T_OBJECT
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'timelines',
+            $this->getChildNodes(
+                $xpath->query('/assets/timelines/*'),
+                'timeline',
+                GMXAsset::T_TIMELINE
+            )
+        ));
+        $this->addAsset(new GMXAssetFolder(
+            'rooms',
+            $this->getChildNodes(
+                $xpath->query('/assets/rooms/*'),
+                'room',
+                GMXAsset::T_ROOM
+            )
+        ));
     }
 
     /**
      * Add an asset to our submodule.
-     * @param GMXAsset $asset
+     * @param $asset
      */
     private function addAsset($asset)
     {
