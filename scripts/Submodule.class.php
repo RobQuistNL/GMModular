@@ -31,11 +31,13 @@ class Submodule {
      */
     private $hash;
 
-    public function __construct($filename) {
-        CLI::verbose('New instance of Submodule spawned (File: ' . $filename . ')');
-        $this->setFile($filename);
-        $this->filepath = pathinfo($filename, PATHINFO_DIRNAME);
-        $this->generateHash();
+    public function __construct($filename = '') {
+        if ($filename != '') {
+            CLI::verbose('New instance of Submodule spawned (File: ' . $filename . ')');
+            $this->setFile($filename);
+            $this->filepath = pathinfo($filename, PATHINFO_DIRNAME);
+            $this->generateHash();
+        }
     }
 
     /**
@@ -63,6 +65,7 @@ class Submodule {
 
         //SHA1 is very unlikely to collide.
         $this->setHash(sha1($hash));
+        return $this->getHash();
     }
 
 
@@ -72,6 +75,14 @@ class Submodule {
     public function setHash($hash)
     {
         $this->hash = $hash;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setFilepath($path)
+    {
+        $this->filepath = $path;
     }
 
     /**

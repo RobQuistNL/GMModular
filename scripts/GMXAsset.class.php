@@ -20,7 +20,6 @@ class GMXAsset {
     //@todo extra info for shader (type)
     //@todo included files
     //@todo constants
-    //@todo support multiple folder depths
 
     /**
      * @var string
