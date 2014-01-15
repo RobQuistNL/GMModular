@@ -192,7 +192,7 @@ class Submodule {
             }
 
             if ($item->hasChildNodes() && $item->getAttribute('name') != '') {
-                $assets[] = new GMXAssetFolder($item->getAttribute('name'), $this->getchildNodes($item->childNodes, $name, $type));
+                $assets[] = new GMXAssetFolder($item->getAttribute('name'), $type, $this->getchildNodes($item->childNodes, $name, $type));
             }
         }
         return $assets;
@@ -209,6 +209,7 @@ class Submodule {
         //Load in all assets from this module
         $this->addAsset(new GMXAssetFolder(
             'sounds',
+            GMXAsset::T_SOUND,
             $this->getChildNodes(
                 $xpath->query('/assets/sounds/*'),
                 'sound',
@@ -217,6 +218,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'sprites',
+            GMXAsset::T_SPRITE,
             $this->getChildNodes(
                 $xpath->query('/assets/sprites/*'),
                 'sprite',
@@ -225,6 +227,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'backgrounds',
+            GMXAsset::T_BACKGROUND,
             $this->getChildNodes(
                 $xpath->query('/assets/backgrounds/*'),
                 'background',
@@ -233,6 +236,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'paths',
+            GMXAsset::T_PATH,
             $this->getChildNodes(
                 $xpath->query('/assets/paths/*'),
                 'path',
@@ -241,6 +245,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'scripts',
+            GMXAsset::T_SCRIPT,
             $this->getChildNodes(
                 $xpath->query('/assets/scripts/*'),
                 'script',
@@ -249,6 +254,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'shaders',
+            GMXAsset::T_SHADER,
             $this->getChildNodes(
                 $xpath->query('/assets/shaders/*'),
                 'shader',
@@ -257,6 +263,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'fonts',
+            GMXAsset::T_FONT,
             $this->getChildNodes(
                 $xpath->query('/assets/fonts/*'),
                 'font',
@@ -265,6 +272,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'objects',
+            GMXAsset::T_OBJECT,
             $this->getChildNodes(
                 $xpath->query('/assets/objects/*'),
                 'object',
@@ -273,6 +281,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'timelines',
+            GMXAsset::T_TIMELINE,
             $this->getChildNodes(
                 $xpath->query('/assets/timelines/*'),
                 'timeline',
@@ -281,6 +290,7 @@ class Submodule {
         ));
         $this->addAsset(new GMXAssetFolder(
             'rooms',
+            GMXAsset::T_ROOM,
             $this->getChildNodes(
                 $xpath->query('/assets/rooms/*'),
                 'room',

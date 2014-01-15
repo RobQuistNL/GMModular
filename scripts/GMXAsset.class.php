@@ -57,7 +57,6 @@ class GMXAsset {
         $return = trim($this->node->textContent); //if there are child nodes (like folders)
         $return = explode("\r", $return);
         $return = trim($return[0]);
-        unset($this->node);
         return $return;
     }
 

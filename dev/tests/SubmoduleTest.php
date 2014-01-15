@@ -24,7 +24,7 @@ class SubmoduleTest extends PHPUnit_Framework_TestCase {
     {
         $sub = $this->getMockSubmodule();
         $assets = $sub->getAssets();
-        for ($i=0; $i<9; $i++) { //Test that all 9 first items are folders
+        for ($i=0; $i<10; $i++) { //Test that all 10 first items are folders
             $this->assertInstanceOf('GMXAssetFolder', $assets[$i]);
         }
     }
