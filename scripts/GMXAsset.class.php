@@ -77,4 +77,46 @@ class GMXAsset {
             throw new Exception('Node not set in GMXAsset!');
         }
     }
+
+    /**
+     * Get the file extension for this specific game asset
+     * @return string
+     */
+    public function getFileExt()
+    {
+        switch ($this->getType()) {
+            case GMXAsset::T_DATAFILE:
+            case GMXAsset::T_SHADER:
+            case GMXAsset::T_SCRIPT:
+                return ''; //uses its own file extension. Thank god for consistency, YYG!
+                break;
+            case GMXAsset::T_SOUND:
+                return '.sound.gmx';
+                break;
+            case GMXAsset::T_SPRITE:
+                return '.sprite.gmx';
+                break;
+            case GMXAsset::T_BACKGROUND:
+                return '.background.gmx';
+                break;
+            case GMXAsset::T_PATH:
+                return '.path.gmx';
+                break;
+            case GMXAsset::T_FONT:
+                return '.font.gmx';
+                break;
+            case GMXAsset::T_OBJECT:
+                return '.object.gmx';
+                break;
+            case GMXAsset::T_TIMELINE:
+                return '.timeline.gmx';
+                break;
+            case GMXAsset::T_ROOM:
+                return '.room.gmx';
+                break;
+            default:
+                throw new Exception('Unknown GMXAsset type ' . $this->getType() . '! File:' . $this->getLocation());
+                break;
+        }
+    }
 }

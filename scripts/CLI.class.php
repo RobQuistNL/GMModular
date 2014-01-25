@@ -9,9 +9,13 @@ class CLI {
      * @param string $default
      * @return string
      */
-    public static function getLine($question, $default = '')
+    public static function getLine($question, $default = '', $showDefault = true)
     {
-        self::line($question . ' [' . $default . ']: ', false);
+        if ($showDefault) {
+            self::line($question . ' [' . $default . ']: ', false);
+        } else {
+            self::line($question . ': ', false);
+        }
         $handle = fopen ("php://stdin","r");
         $line = fgets($handle);
         if (trim($line) == '') {
@@ -63,6 +67,30 @@ class CLI {
             self::line(
                 Color::str('V: ' . $string, "light_cyan", "")
             );
+        }
+    }
+
+    /**
+     * Get a yes no question. Repeats until either Y or N is given.
+     * Returns true / false for respectively yes or no.
+     *
+     * @param $question
+     * @param string $defaultAnswer
+     * @returns bool True for Yes, False for No.
+     */
+    public static function getYesNo($question, $defaultAnswer = 'y')
+    {
+        $defaultAnswer = strtolower($defaultAnswer);
+        $ynselector = ($defaultAnswer == 'y') ? '[Y/n]' : '[y/N]';
+        $answer = '';
+        while ($answer != 'n' && $answer != 'y') {
+            $answer = self::getLine($question . ' ' . $ynselector, $defaultAnswer, false);
+            $answer = strtolower($answer);
+        }
+        if ($answer == 'y') {
+            return true;
+        } else {
+            return false;
         }
     }
 

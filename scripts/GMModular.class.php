@@ -66,7 +66,7 @@ class GMModular {
     public function checkAssetExists(GMXAsset $assetFile)
     {
         $file = $this->projectRoot . DS . $assetFile->getLocation();
-        $file = str_replace('\\', DS, $file) . '.gmx';
+        $file = str_replace('\\', DS, $file) . $assetFile->getFileExt();
         $exists = file_exists($file);
         CLI::verbose('Check if file [' . $file . '] exists: ' . (int) $exists);
         if ($exists) {
@@ -105,6 +105,7 @@ class GMModular {
         /*
          * Loop through all the assets in this submodule and add them to the DOMDocument.
          */
+        CLI::debug('Combining module project file into root project file...');
         $parentNode = $this->getDom()->getElementsByTagName('assets')->item(0);
         foreach ($submoduleAssets as $asset) {
             if ($asset instanceof GMXAssetFolder) { //We have to create our <MODULE> folder first
@@ -132,7 +133,9 @@ class GMModular {
             }
         }
         $xml = $this->getDom()->saveXML();
-        echo 'new doc:' . PHP_EOL . $xml;
+        CLI::debug('New XML file generated.');
+
+        echo 'TODO: COPY ALL ASSET FILES!';
 
         //$this->writeAssets($submoduleAssets, $projectDocument);
         //var_dump($submoduleAssets);
@@ -148,6 +151,7 @@ class GMModular {
      */
     public function runDoubleAssetCheck($submoduleAssets)
     {
+        CLI::debug('Starting double asset check');
         $doubleAssets = $this->checkDoubleAssets($submoduleAssets);
         if (count($doubleAssets) >= 1) {
             CLI::warning('Double asset names have been found:');
@@ -155,11 +159,7 @@ class GMModular {
                 CLI::warning('    ' . $doubleName);
             }
             CLI::warning('You can continue, but existing assets WILL BE OVERWRITTEN!');
-            $answer = '';
-            while ($answer != 'n' && $answer != 'y') {
-                $answer = CLI::getLine('Overwrite ' . count($doubleAssets) . ' game assets? [y/N]', 'n');
-            }
-            if ($answer == 'n') {
+            if (CLI::getYesNo('Overwrite ' . count($doubleAssets) . ' game assets?', 'n') == false) {
                 CLI::notice('Not overwriting game assets.');
                 if (DRYRUN) {
                     CLI::notice('Script will continue because of --dryrun tag!');

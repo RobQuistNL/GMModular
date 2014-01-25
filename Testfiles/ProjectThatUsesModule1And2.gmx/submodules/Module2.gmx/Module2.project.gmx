@@ -38,6 +38,9 @@
   </paths>
   <scripts name="scripts">
     <script>scripts\scr_mod2.gml</script>
+    <scripts name="folder from mod 2">
+      <script>scripts\scr_doubleScriptName.gml</script>
+    </scripts>
   </scripts>
   <shaders name="shaders">
     <shader type="GLSLES">shaders\shdr_mod2.shader</shader>

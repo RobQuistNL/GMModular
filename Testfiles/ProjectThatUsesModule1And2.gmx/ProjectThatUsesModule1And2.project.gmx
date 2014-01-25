@@ -12,6 +12,7 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\scr_mainproject.gml</script>
+    <script>scripts\scr_doubleScriptName.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_withAnObject</object>
