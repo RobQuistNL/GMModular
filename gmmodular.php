@@ -1,4 +1,5 @@
 <?php
+//@todo Implement a --clean function, to delete non-used asset files.
 require("./scripts/init.php");
 
 //Check args

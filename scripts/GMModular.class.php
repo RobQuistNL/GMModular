@@ -32,6 +32,54 @@ class GMModular {
     private $availableSubmodules;
 
     /**
+     * Check if the given asset file exists. A Assetfolder will always return false.
+     * @param $assetFile
+     * @return bool
+     */
+    public function checkDoubleAssets($assetFile)
+    {
+        $doubleAssets = array();
+        if ($assetFile instanceof GMXAsset) {
+            $doubleAssets = array_merge($doubleAssets, $this->checkAssetExists($assetFile));
+        } else if ($assetFile instanceof GMXAssetFolder) {
+            foreach ($assetFile->children as $asset) {
+                $doubleAssets = array_merge($doubleAssets, $this->checkDoubleAssets($asset));
+            }
+        } else {
+            if (is_array($assetFile)) {
+                foreach ($assetFile as $asset) {
+                    $doubleAssets = array_merge($doubleAssets, $this->checkDoubleAssets($asset));
+                }
+            } else {
+                var_dump($assetFile);
+                throw new Exception('Unhandled type!');
+            }
+        }
+        return $doubleAssets;
+    }
+
+    /**
+     * Check if the given asset file exists.
+     * @param GMXAsset $assetFile
+     * @return array Filled with double assets
+     */
+    public function checkAssetExists(GMXAsset $assetFile)
+    {
+        $file = $this->projectRoot . DS . $assetFile->getLocation();
+        $file = str_replace('\\', DS, $file) . '.gmx';
+        $exists = file_exists($file);
+        CLI::verbose('Check if file [' . $file . '] exists: ' . (int) $exists);
+        if ($exists) {
+            CLI::debug('Double asset found: ' . $file);
+        }
+        if ($exists) {
+            return array($file);
+        } else {
+            return array();
+        }
+    }
+
+    /**
      * Merge the given submodule into our loaded main project.
      * We will also add the submodule to the GMModularFile, and save it.
      * @param Submodule $submodule
@@ -49,6 +97,14 @@ class GMModular {
             $this->dumpAssets($submoduleAssets);
         }
 
+        if ($this->runDoubleAssetCheck($submoduleAssets) == false) { //Check for double files / ask user what to do.
+            //False means, don't continue.
+            return false;
+        }
+
+        /*
+         * Loop through all the assets in this submodule and add them to the DOMDocument.
+         */
         $parentNode = $this->getDom()->getElementsByTagName('assets')->item(0);
         foreach ($submoduleAssets as $asset) {
             if ($asset instanceof GMXAssetFolder) { //We have to create our <MODULE> folder first
@@ -79,13 +135,52 @@ class GMModular {
         echo 'new doc:' . PHP_EOL . $xml;
 
         //$this->writeAssets($submoduleAssets, $projectDocument);
-        var_dump($submoduleAssets);
+        //var_dump($submoduleAssets);
         //var_dump($projectDocument);
         die;
         //$GMModularFile->installModule($submodule);
 
     }
 
+    /**
+     * Check for double asset names, and if they occur, ask the user what to do.
+     * @return bool
+     */
+    public function runDoubleAssetCheck($submoduleAssets)
+    {
+        $doubleAssets = $this->checkDoubleAssets($submoduleAssets);
+        if (count($doubleAssets) >= 1) {
+            CLI::warning('Double asset names have been found:');
+            foreach ($doubleAssets as $doubleName) {
+                CLI::warning('    ' . $doubleName);
+            }
+            CLI::warning('You can continue, but existing assets WILL BE OVERWRITTEN!');
+            $answer = '';
+            while ($answer != 'n' && $answer != 'y') {
+                $answer = CLI::getLine('Overwrite ' . count($doubleAssets) . ' game assets? [y/N]', 'n');
+            }
+            if ($answer == 'n') {
+                CLI::notice('Not overwriting game assets.');
+                if (DRYRUN) {
+                    CLI::notice('Script will continue because of --dryrun tag!');
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                CLI::warning('Overwriting game assets!');
+                return true;
+            }
+        }
+        CLI::debug('No conflicting / double asset names have been found. Continuing script!');
+        return true; //Default, no doubles have been found so we can continue.
+    }
+
+    /**
+     * Appending assets to an existing (new) node. Allows for recursion.
+     * @param array $submoduleAssets
+     * @param DOMNode $parentNode
+     */
     public function appendAssets(array $submoduleAssets, DOMNode $parentNode) {
         foreach ($submoduleAssets as $asset) {
             if ($asset instanceof GMXAssetFolder) {

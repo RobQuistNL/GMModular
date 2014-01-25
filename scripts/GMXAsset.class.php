@@ -65,6 +65,12 @@ class GMXAsset {
         return $this->type;
     }
 
+    public function getNode()
+    {
+        $this->checkNode();
+        return $this->node;
+    }
+
     public function checkNode()
     {
         if (null == $this->node) {
