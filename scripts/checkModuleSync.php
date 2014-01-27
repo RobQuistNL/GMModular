@@ -1,7 +1,6 @@
 <?php
 //Find all not installed modules:
 $MDLIST_notInstalled = array();
-var_dump($GMModularFile->getInstalledSubmodulesNames());
 foreach ($GMModular->getAvailableSubmodules() as $available) {
     if (!in_array($available, $GMModularFile->getInstalledSubmodulesNames())) {
         CLI::debug('Module ' . $available . ' available but not in installed list.');
@@ -38,10 +37,10 @@ if (count($MDLIST_removed) > 0) {
 
 //Find all out of sync modules
 $MDLIST_notSynced = array();
-foreach ($GMModularFile->getInstalledSubmodulesNames() as $installed) {
+foreach ($GMModularFile->getInstalledSubmodulesNames() as $installed => $installedValue) {
     $availableModules = $GMModular->getAvailableSubmodules();
     if (in_array($installed, $availableModules)) {
-        $installedHash = $installed->getHash();
+        $installedHash = $installedValue['hash'];
         $currentHash = $availableModules[(string) $installed]->getHash();
         if ($installedHash != $currentHash) {
             CLI::debug('Found out of sync module: ' . $installed);
