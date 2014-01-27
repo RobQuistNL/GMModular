@@ -128,14 +128,14 @@ class GMModular {
                     $instanceType->appendChild($newAsset);
                 }
             } else {
-                //$newAsset = new DOMElement($this->getAssetNodeName($asset['type']), $asset->getLocation());
-                throw new Exception('FOUND A GENERAL ASSET ('.$asset['node']->getLocation().') ON 0-LEVEL! WTF!');
+                throw new Exception('FOUND A GENERAL ASSET ('.$asset['node']->getLocation().') ON 0-LEVEL! Can\'t be right!');
             }
         }
         $xml = $this->getDom()->saveXML();
         CLI::debug('New XML file generated.');
 
-        echo 'TODO: COPY ALL ASSET FILES!';
+        CLI::debug('Copying game asset files.');
+        $this->copyAssetFiles($submoduleAssets, $submodule->getFilepath());
 
         //$this->writeAssets($submoduleAssets, $projectDocument);
         //var_dump($submoduleAssets);
@@ -143,6 +143,31 @@ class GMModular {
         die;
         //$GMModularFile->installModule($submodule);
 
+    }
+
+    /**
+     * Check for double asset names, and if they occur, ask the user what to do.
+     * @return bool
+     */
+    public function copyAssetFiles($assetFile, $submoduleLocation)
+    {
+        if ($assetFile instanceof GMXAsset) {
+            $assetFile->copyAsset($this->projectRoot, $submoduleLocation);
+        } else if ($assetFile instanceof GMXAssetFolder) {
+            foreach ($assetFile->children as $asset) {
+                $this->copyAssetFiles($asset, $submoduleLocation);
+            }
+        } else {
+            if (is_array($assetFile)) {
+                foreach ($assetFile as $asset) {
+                    $this->copyAssetFiles($asset, $submoduleLocation);
+                }
+            } else {
+                CLI::warning('Unknown asset file found in submodule. We will try to continue.');
+                CLI::warning('Asset file dump:');
+                var_dump($assetFile);
+            }
+        }
     }
 
     /**

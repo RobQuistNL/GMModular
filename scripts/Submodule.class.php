@@ -87,6 +87,14 @@ class Submodule {
     }
 
     /**
+     * @return string $path
+     */
+    public function getFilepath()
+    {
+        return $this->filepath;
+    }
+
+    /**
      * @return string
      */
     public function getHash()

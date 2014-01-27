@@ -18,8 +18,11 @@ foreach ($argv as $nr => $argument) {
                 break;
             case '-v':
                 $options['verbose'] = true;
+                $options['debug'] = true;
+                $options['error_debug'] = true;
                 break;
             case '--dry-run':
+            case '--dryrun':
                 $options['dryrun'] = true;
                 break;
             case '--no-color':

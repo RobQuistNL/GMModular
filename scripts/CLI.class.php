@@ -115,6 +115,16 @@ class CLI {
             );
         }
     }
+
+    /**
+     * Fix the filepath slashes to 1 type.
+     * @param $filepath
+     * @return string
+     */
+    public static function fixDS($filepath)
+    {
+        return str_replace('\\', DS, $filepath);
+    }
 }
 
 ?>

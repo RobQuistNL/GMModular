@@ -14,8 +14,9 @@ function showUsage($wrongUsage = true) {
     cli::line(' Options:');
     cli::line('     -d                   Debug');
     cli::line('     -D                   PHP-Debug (don\'t suppress PHP errors)');
-    cli::line('     -v                   Verbose');
+    cli::line('     -v                   Be verbose (includes -d and -D)');
     cli::line('     --dry-run            Do not touch files');
+    cli::line('     --dryrun             Do not touch files');
     cli::line('     --no-color           Do not use colours in feedback');
     cli::line('     --sync               Synchronize all. This;');
     cli::line('          - Installs all new found modules');

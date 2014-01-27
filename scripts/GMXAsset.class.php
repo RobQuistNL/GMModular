@@ -119,4 +119,102 @@ class GMXAsset {
                 break;
         }
     }
+
+    /**
+     * Copy all my asset files and related files to the directory.
+     * @param string $projectRoot
+     * @param string $submoduleFolder The name of the submodule folder
+     */
+    public function copyAsset($projectRoot, $submoduleLocation)
+    {
+        $files = $this->getFilesToCopy($submoduleLocation);
+        foreach ($files as $file) {
+            $source = str_replace('\\', DS, realpath($submoduleLocation) . DS . $file);
+            $target = str_replace('\\', DS, realpath($projectRoot) . DS . $file);
+            if (DRYRUN) {
+                CLI::notice('DRYRUN: Copy ' . $source . ' -> ' . $target);
+            }
+
+        }
+
+    }
+
+    /**
+     * Returns a multi-dimensional array filled with origin and location for files.
+     */
+    public function getFilesToCopy($submoduleLocation)
+    {
+        $files = array();
+        $files[] = $this->getAssetFile(); //Always our own asset
+
+        if ($this->getType() == GMXAsset::T_DATAFILE ||
+            $this->getType() == GMXAsset::T_SHADER ||
+            $this->getType() == GMXAsset::T_SCRIPT) {
+            return $files;
+        }
+
+        // Check all the extra files we need to copy.
+        $gmmod = new GMModular();
+        $dom = $this->getAssetDom($submoduleLocation);
+        $xpath = new DOMXPath($dom);
+        switch ($this->getType()) {
+            case GMXAsset::T_SOUND:
+                $assetFile = $xpath->query('/sound/data')->item(0)->textContent;
+                $files[] = 'sound' . DS . 'audio' . DS . trim(CLI::fixDS($assetFile));
+                break;
+            case GMXAsset::T_SPRITE:
+                $assetFile = $xpath->query('/sprite/frames/frame');
+                for ($i = 0; $i < $assetFile->length; $i++) {
+                    $filename = $assetFile->item($i)->textContent;
+                    $files[] = 'sprites' . DS . trim(CLI::fixDS($filename));
+                }
+                break;
+            case GMXAsset::T_BACKGROUND:
+                return '.background.gmx';
+                break;
+            case GMXAsset::T_PATH:
+                return '.path.gmx';
+                break;
+            case GMXAsset::T_FONT:
+                return '.font.gmx';
+                break;
+            case GMXAsset::T_OBJECT:
+                return '.object.gmx';
+                break;
+            case GMXAsset::T_TIMELINE:
+                return '.timeline.gmx';
+                break;
+            case GMXAsset::T_ROOM:
+                return '.room.gmx';
+                break;
+        }
+
+        return $files;
+    }
+
+    /**
+     * Get the DOMDocument of the asset file
+     * @return DOMDocument
+     */
+    public function getAssetDom($submoduleLocation)
+    {
+        $doc = new DOMDocument();
+        $doc->loadXML(file_get_contents(realpath($submoduleLocation) . DS . $this->getAssetFile()));
+        return $doc;
+    }
+
+    /**
+     * Get the parents node name (e.g. sprites, datafiles, sounds etc.)
+     * @return string
+     */
+    public function getParentNodeName()
+    {
+        $gmmod = new GMModular();
+        return $gmmod->getParentNodeName($this->getType());
+    }
+
+    public function getAssetFile()
+    {
+        return CLI::fixDS($this->getLocation() . $this->getFileExt());
+    }
 }

@@ -28,6 +28,7 @@
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_mod2_spr</sprite>
+    <sprite>sprites\spr_mod2_multiple</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bak_mod2_modern_art</background>
