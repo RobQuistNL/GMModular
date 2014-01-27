@@ -110,7 +110,7 @@ class GMModular {
                 CLI::notice('DRYRUN: delete ' . $file);
             } else {
 
-                unlink(str_replace('\\', DS, realpath($submoduleLocation) . DS . $file));
+                unlink(str_replace('\\', DS, realpath($this->getProjectRoot()) . DS . $file));
             }
         }
         CLI::notice('Deleted ' . count($submoduleArray['files']) . ' files.');
