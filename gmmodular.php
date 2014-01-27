@@ -26,10 +26,10 @@ if (false == $gmmfile) {
     CLI::verbose('Loading module file in to gmmodular instance');
     $GMModularFile = $GMModularFile->load();
 }
-var_dump($GMModularFile);
-die;
+
 //This one returns us with the following variables:
 $MDLIST_notInstalled = array();
+$MDLIST_installed = array();
 $MDLIST_removed = array();
 $MDLIST_notSynced = array();
 require "./scripts/checkModuleSync.php";
@@ -52,6 +52,12 @@ if (SYNC) { //Synchronize all modules.
                 break;
             case 1: //Uninstall
                 CLI::verbose('Entering uninstall menu');
+                $selected = getMenuItem('uninstall', $MDLIST_installed);
+                if ($selected == 0) { //Cancel item
+                    continue;
+                }
+                echo 'UNINSTALL: ' .$MDLIST_installed[$selected-1];
+                $GMModular->uninstallModule($MDLIST_installed[$selected-1], $GMModularFile);
                 break;
             case 2: //Synchronize
                 CLI::verbose('Entering sync menu');

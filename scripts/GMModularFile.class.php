@@ -68,7 +68,7 @@ class GMModularFile {
         if (DRYRUN) {
             CLI::notice('DRY-RUN IN EFFECT. ' . $this->file . ' has not been written to.');
         } else {
-            file_put_contents(realpath($this->file), serialize($this));
+            file_put_contents($this->file, serialize($this));
             CLI::debug('New data written to ' . $this->file . '');
         }
 
@@ -122,6 +122,7 @@ class GMModularFile {
         $this->installedSubmodules[$submodule->getName()]['files'] = $copied;
         $this->installedSubmodules[$submodule->getName()]['hash'] = $submodule->getHash();
         $this->installedSubmodules[$submodule->getName()]['date'] = time();
+        $this->installedSubmodules[$submodule->getName()]['class'] = $submodule;
     }
 
     /**
@@ -131,7 +132,7 @@ class GMModularFile {
      */
     public function removeModule($modulename)
     {
-        unset($this->installedModules[$modulename]);
+        unset($this->installedSubmodules[$modulename]);
     }
 
     /**
@@ -141,10 +142,10 @@ class GMModularFile {
      */
     public function getInstalledModule($modulename)
     {
-        if (!isset($this->installedModules[$modulename])) {
+        if (!isset($this->installedSubmodules[$modulename])) {
             return null;
         }
-        return $this->installedModules[$modulename];
+        return $this->installedSubmodules[$modulename];
     }
 
     /**

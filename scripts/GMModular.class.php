@@ -82,6 +82,85 @@ class GMModular {
     /**
      * Merge the given submodule into our loaded main project.
      * We will also add the submodule to the GMModularFile, and save it.
+     * @param array $submodule
+     * @param GMModularFile $GMModularFile
+     */
+    public function uninstallModule($submoduleArray, GMModularFile $GMModularFile)
+    {
+        $submodule = $submoduleArray['class'];
+        CLI::verbose('Starting uninstallation of module ' . $submodule);
+
+        $submoduleAssets = $submodule->getAssets();
+
+        if (DEBUG) {
+            CLI::debug('Assets found in module ' . $submodule . ':');
+            $this->dumpAssets($submoduleAssets);
+        }
+
+        /*
+         * Loop through all the assets in this submodule and REMOVE them from the DOMDocument.
+         */
+        CLI::debug('Removing module project file out of root project file...');
+        $parentNode = $this->getDom()->getElementsByTagName('assets')->item(0);
+        foreach ($submoduleAssets as $asset) {
+            if ($asset instanceof GMXAssetFolder) { //We have to create our <MODULE> folder first
+
+                //Check if we even have stuff in there
+                if (count($asset->children) >= 1) {
+                    //Select the mainfolder
+                    $instanceType = $parentNode->getElementsByTagName($this->getParentNodeName($asset->type))->item(0);
+
+                    //Check our submodules' child folder
+                    $newAsset = $this->getDom()->createElement($this->getParentNodeName($asset->type));
+                    $newAsset->setAttribute('name', $submodule->getName());
+                    $instanceType->removeChild($newAsset); //and delete it
+                }
+            } else {
+                throw new Exception('FOUND A GENERAL ASSET ('.$asset['node']->getLocation().') ON 0-LEVEL! Can\'t be right!');
+            }
+        }
+        $xml = $this->getDom()->saveXML();
+        CLI::debug('New XML file generated.');
+
+        CLI::debug('Removing game asset files.');
+        foreach ($submoduleArray['files'] as $file) {
+            if (DRYRUN) {
+                CLI::notice('DRYRUN: delete ' . $file);
+            } else {
+
+                unlink(str_replace('\\', DS, realpath($submoduleLocation) . DS . $file));
+            }
+        }
+        CLI::notice('Deleted ' . count($submoduleArray['files']) . ' files.');
+        $GMModularFile->removeModule($submodule->getName());
+
+        CLI::debug('Saving GMModular file.');
+        if (DRYRUN) {
+            CLI::notice('DRYRUN: Write new module file');
+        } else {
+            $GMModularFile->save();
+        }
+        CLI::debug('Backing up old project file.');
+        if (DRYRUN) {
+            CLI::notice('DRYRUN: Copy backup of main project');
+        } else {
+            copy(
+                realpath($this->getFile()),
+                pathinfo(realpath($this->getFile()), PATHINFO_DIRNAME) . DS  . time() . '.project.backup.gmx'
+            );
+        }
+        CLI::debug('Saving new project file.');
+        if (DRYRUN) {
+            CLI::notice('DRYRUN: Overwrite main project file with new XML');
+        } else {
+            file_put_contents(realpath($this->getFile()), $xml);
+        }
+
+    }
+
+    /**
+     * Merge the given submodule into our loaded main project.
+     * We will also add the submodule to the GMModularFile, and save it.
      * @param Submodule $submodule
      * @param GMModularFile $GMModularFile
      */
