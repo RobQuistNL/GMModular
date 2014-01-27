@@ -56,8 +56,8 @@ if (SYNC) { //Synchronize all modules.
                 if ($selected == 0) { //Cancel item
                     continue;
                 }
-                echo 'UNINSTALL: ' .$MDLIST_installed[$selected-1];
-                $GMModular->uninstallModule($MDLIST_installed[$selected-1], $GMModularFile);
+                echo 'UNINSTALL: ' . $MDLIST_installed[$selected-1];
+                $GMModular->uninstallModule($GMModularFile->getInstalledModule($MDLIST_installed[$selected-1]), $GMModularFile);
                 break;
             case 2: //Synchronize
                 CLI::verbose('Entering sync menu');

@@ -181,6 +181,7 @@ class Submodule {
     public function getAssets()
     {
         if (null == $this->assets) {
+            CLI::debug('Parsing / lazy loading assets...');
             $this->parseAssets();
         }
         return $this->assets;

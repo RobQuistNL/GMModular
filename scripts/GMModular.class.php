@@ -90,34 +90,16 @@ class GMModular {
         $submodule = $submoduleArray['class'];
         CLI::verbose('Starting uninstallation of module ' . $submodule);
 
-        $submoduleAssets = $submodule->getAssets();
-
-        if (DEBUG) {
-            CLI::debug('Assets found in module ' . $submodule . ':');
-            $this->dumpAssets($submoduleAssets);
-        }
-
         /*
          * Loop through all the assets in this submodule and REMOVE them from the DOMDocument.
          */
         CLI::debug('Removing module project file out of root project file...');
-        $parentNode = $this->getDom()->getElementsByTagName('assets')->item(0);
-        foreach ($submoduleAssets as $asset) {
-            if ($asset instanceof GMXAssetFolder) { //We have to create our <MODULE> folder first
-
-                //Check if we even have stuff in there
-                if (count($asset->children) >= 1) {
-                    //Select the mainfolder
-                    $instanceType = $parentNode->getElementsByTagName($this->getParentNodeName($asset->type))->item(0);
-
-                    //Check our submodules' child folder
-                    $newAsset = $this->getDom()->createElement($this->getParentNodeName($asset->type));
-                    $newAsset->setAttribute('name', $submodule->getName());
-                    $instanceType->removeChild($newAsset); //and delete it
-                }
-            } else {
-                throw new Exception('FOUND A GENERAL ASSET ('.$asset['node']->getLocation().') ON 0-LEVEL! Can\'t be right!');
-            }
+        $xpath = new DOMXPath($this->getDom());
+        $query = $xpath->query('/assets/*/*[@name="' . $submodule->getName().'"]');
+        $dom = $this->getDom();
+        foreach($query as $node) {
+            CLI::verbose('Removing node at line ' . $node->getLineNo());
+            $node->parentNode->removeChild($node);
         }
         $xml = $this->getDom()->saveXML();
         CLI::debug('New XML file generated.');
