@@ -133,10 +133,18 @@ class GMXAsset {
             $target = str_replace('\\', DS, realpath($projectRoot) . DS . $file);
             if (DRYRUN) {
                 CLI::notice('DRYRUN: Copy ' . $source . ' -> ' . $target);
+            } else {
+                CLI::verbose('Copying ' . $file . '...');
+                $targetFolder = pathinfo($target, PATHINFO_DIRNAME);
+                if (!is_dir($targetFolder)) {
+                    CLI::verbose('Creating folder; ' . $targetFolder);
+                    mkdir($targetFolder);
+                }
+                copy($source, $target);
             }
-
         }
 
+        return $files;
     }
 
     /**
@@ -147,9 +155,16 @@ class GMXAsset {
         $files = array();
         $files[] = $this->getAssetFile(); //Always our own asset
 
-        if ($this->getType() == GMXAsset::T_DATAFILE ||
-            $this->getType() == GMXAsset::T_SHADER ||
-            $this->getType() == GMXAsset::T_SCRIPT) {
+        $skipTypes = array( //These ones are single filed
+            GMXAsset::T_OBJECT,
+            GMXAsset::T_DATAFILE,
+            GMXAsset::T_SHADER,
+            GMXAsset::T_PATH,
+            GMXAsset::T_SCRIPT,
+            GMXAsset::T_TIMELINE,
+            GMXAsset::T_ROOM
+        );
+        if (in_array($this->getType(), $skipTypes)) {
             return $files;
         }
 
@@ -158,6 +173,9 @@ class GMXAsset {
         $dom = $this->getAssetDom($submoduleLocation);
         $xpath = new DOMXPath($dom);
         switch ($this->getType()) {
+            /*
+             * These all need some extra files to be copied.
+             */
             case GMXAsset::T_SOUND:
                 $assetFile = $xpath->query('/sound/data')->item(0)->textContent;
                 $files[] = 'sound' . DS . 'audio' . DS . trim(CLI::fixDS($assetFile));
@@ -170,22 +188,12 @@ class GMXAsset {
                 }
                 break;
             case GMXAsset::T_BACKGROUND:
-                return '.background.gmx';
-                break;
-            case GMXAsset::T_PATH:
-                return '.path.gmx';
+                $assetFile = $xpath->query('/background/data')->item(0)->textContent;
+                $files[] = 'background' . DS . trim(CLI::fixDS($assetFile));
                 break;
             case GMXAsset::T_FONT:
-                return '.font.gmx';
-                break;
-            case GMXAsset::T_OBJECT:
-                return '.object.gmx';
-                break;
-            case GMXAsset::T_TIMELINE:
-                return '.timeline.gmx';
-                break;
-            case GMXAsset::T_ROOM:
-                return '.room.gmx';
+                $assetFile = $xpath->query('/font/image')->item(0)->textContent;
+                $files[] = 'fonts' . DS . trim(CLI::fixDS($assetFile));
                 break;
         }
 
@@ -213,6 +221,10 @@ class GMXAsset {
         return $gmmod->getParentNodeName($this->getType());
     }
 
+    /**
+     * Get our asset file name
+     * @return string
+     */
     public function getAssetFile()
     {
         return CLI::fixDS($this->getLocation() . $this->getFileExt());

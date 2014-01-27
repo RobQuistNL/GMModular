@@ -135,13 +135,31 @@ class GMModular {
         CLI::debug('New XML file generated.');
 
         CLI::debug('Copying game asset files.');
-        $this->copyAssetFiles($submoduleAssets, $submodule->getFilepath());
+        $copied = $this->copyAssetFiles($submoduleAssets, $submodule->getFilepath());
+        CLI::notice('Copied ' . count($copied) . ' files.');
+        $GMModularFile->installModule($submodule, $copied);
 
-        //$this->writeAssets($submoduleAssets, $projectDocument);
-        //var_dump($submoduleAssets);
-        //var_dump($projectDocument);
-        die;
-        //$GMModularFile->installModule($submodule);
+        CLI::debug('Saving GMModular file.');
+        if (DRYRUN) {
+            CLI::notice('DRYRUN: Write new module file');
+        } else {
+            $GMModularFile->save();
+        }
+        CLI::debug('Backing up old project file.');
+        if (DRYRUN) {
+            CLI::notice('DRYRUN: Copy backup of main project');
+        } else {
+            copy(
+                realpath($this->getFile()),
+                pathinfo(realpath($this->getFile()), PATHINFO_DIRNAME) . DS . 'backup-' . time() . '.project.gmx'
+            );
+        }
+        CLI::debug('Saving new project file.');
+        if (DRYRUN) {
+            CLI::notice('DRYRUN: Overwrite main project file with new XML');
+        } else {
+            file_put_contents(realpath($this->getFile()), $xml);
+        }
 
     }
 
@@ -151,16 +169,17 @@ class GMModular {
      */
     public function copyAssetFiles($assetFile, $submoduleLocation)
     {
+        $copied = array();
         if ($assetFile instanceof GMXAsset) {
-            $assetFile->copyAsset($this->projectRoot, $submoduleLocation);
+            $copied = array_merge($assetFile->copyAsset($this->projectRoot, $submoduleLocation), $copied);
         } else if ($assetFile instanceof GMXAssetFolder) {
             foreach ($assetFile->children as $asset) {
-                $this->copyAssetFiles($asset, $submoduleLocation);
+                $copied = array_merge($this->copyAssetFiles($asset, $submoduleLocation), $copied);
             }
         } else {
             if (is_array($assetFile)) {
                 foreach ($assetFile as $asset) {
-                    $this->copyAssetFiles($asset, $submoduleLocation);
+                    $copied = array_merge($this->copyAssetFiles($asset, $submoduleLocation), $copied);
                 }
             } else {
                 CLI::warning('Unknown asset file found in submodule. We will try to continue.');
@@ -168,6 +187,7 @@ class GMModular {
                 var_dump($assetFile);
             }
         }
+        return $copied;
     }
 
     /**

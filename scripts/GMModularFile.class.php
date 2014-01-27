@@ -100,6 +100,41 @@ class GMModularFile {
     }
 
     /**
+     * Install a specific submodule into gmmodular.gmm and a list of the copied files (for uninstallation)
+     * @param $submodule
+     * @param $copied
+     */
+    public function installModule($submodule, $copied)
+    {
+        $this->installedModules[$submodule->getName()]['files'] = $copied;
+        $this->installedModules[$submodule->getName()]['hash'] = $submodule->getHash();
+        $this->installedModules[$submodule->getName()]['date'] = time();
+    }
+
+    /**
+     * Remove a specific submodule from the gmmodular file. Be sure to first remove the files!
+     * @param $modulename
+     * @return void
+     */
+    public function removeModule($modulename)
+    {
+        unset($this->installedModules[$modulename]);
+    }
+
+    /**
+     * Get the settings of an installed module.
+     * @param $modulename
+     * @return null | array
+     */
+    public function getInstalledModule($modulename)
+    {
+        if (!isset($this->installedModules[$modulename])) {
+            return null;
+        }
+        return $this->installedModules[$modulename];
+    }
+
+    /**
      * Get version of this object
      * @return float
      */
