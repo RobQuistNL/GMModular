@@ -137,7 +137,7 @@ class GMModular {
         } else {
             file_put_contents(realpath($this->getFile()), $xml);
         }
-
+        CLI::line(Color::str('Submodule ' . $submodule->getName() . ' successfully uninstalled!', 'cyan', 'blue'));
     }
 
     /**
@@ -221,7 +221,7 @@ class GMModular {
         } else {
             file_put_contents(realpath($this->getFile()), $xml);
         }
-
+        CLI::line(Color::str('Submodule ' . $submodule->getName() . ' successfully installed!', 'black', 'green'));
     }
 
     /**

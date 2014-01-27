@@ -1,5 +1,12 @@
 <?php
 //@todo Implement a --clean function, to delete non-used asset files.
+//@todo make the checkModuleSync into a nice function
+//@todo general cleaning up
+//@todo datafiles / settings
+//@todo constants
+//@todo add manual reindex while in menu
+//@todo fix the --sync functionality to install && sync all modules
+
 require("./scripts/init.php");
 
 //Check args
@@ -49,6 +56,13 @@ if (SYNC) { //Synchronize all modules.
                     continue;
                 }
                 $GMModular->installModule($MDLIST_notInstalled[$selected-1], $GMModularFile);
+                CLI::debug('Reindexing...');
+                $MDLIST_notInstalled = array();
+                $MDLIST_installed = array();
+                $MDLIST_removed = array();
+                $MDLIST_notSynced = array();
+                require "./scripts/checkModuleSync.php";
+
                 break;
             case 1: //Uninstall
                 CLI::verbose('Entering uninstall menu');
@@ -56,11 +70,43 @@ if (SYNC) { //Synchronize all modules.
                 if ($selected == 0) { //Cancel item
                     continue;
                 }
-                echo 'UNINSTALL: ' . $MDLIST_installed[$selected-1];
                 $GMModular->uninstallModule($GMModularFile->getInstalledModule($MDLIST_installed[$selected-1]), $GMModularFile);
+                CLI::debug('Reindexing...');
+                $MDLIST_notInstalled = array();
+                $MDLIST_installed = array();
+                $MDLIST_removed = array();
+                $MDLIST_notSynced = array();
+                require "./scripts/checkModuleSync.php";
                 break;
             case 2: //Synchronize
                 CLI::verbose('Entering sync menu');
+                $selected = getMenuItem('synchronize', $MDLIST_notSynced);
+                if ($selected == 0) { //Cancel item
+                    continue;
+                }
+                $moduleName = $MDLIST_notSynced[$selected-1];
+                ob_start();
+                $GMModular->uninstallModule($GMModularFile->getInstalledModule($moduleName), $GMModularFile);
+                CLI::debug('Reindexing...');
+                $MDLIST_notInstalled = array();
+                $MDLIST_installed = array();
+                $MDLIST_removed = array();
+                $MDLIST_notSynced = array();
+                require "./scripts/checkModuleSync.php";
+
+                foreach ($MDLIST_notInstalled as $test) {
+                    if ($test->__toString() == $moduleName) {
+                        $GMModular->installModule($test, $GMModularFile);
+                    }
+                }
+                CLI::debug(ob_get_clean());
+                CLI::line(Color::str('Submodule ' . $moduleName . ' successfully synchronized!', 'black', 'green'));
+                CLI::debug('Reindexing...');
+                $MDLIST_notInstalled = array();
+                $MDLIST_installed = array();
+                $MDLIST_removed = array();
+                $MDLIST_notSynced = array();
+                require "./scripts/checkModuleSync.php";
                 break;
             case 3: //Quit
                 CLI::verbose('Quitting');

@@ -46,7 +46,7 @@ function showWelcome() {
 function showMenu() {
     CLI::verbose('Showing main menu');
     CLI::line();
-    CLI::line('Please select an option:');
+    CLI::line(Color::str('Please select an option:', 'green'));
     CLI::line('    ' . Color::str('1', 'cyan') . '. Install a module');
     CLI::line('    ' . Color::str('2', 'cyan') . '. Uninstall a module');
     CLI::line('    ' . Color::str('3', 'cyan') . '. Synchronize a module');
@@ -63,5 +63,5 @@ function getMenuItem($name, $array) {
         CLI::line('    ' . Color::str($i, 'cyan') . ' [' . $item . ']');
         $i++;
     }
-    return CLI::getLine('Select module to install [0-' . count($array) . ']', 0);
+    return CLI::getLine('Select module to ' . $name . ' [0-' . count($array) . ']', 0);
 }

@@ -9,7 +9,7 @@ foreach ($GMModular->getAvailableSubmodules() as $available) {
 }
 
 if (count($MDLIST_notInstalled) > 0) {
-    CLI::line('You have ' . count($MDLIST_notInstalled) . ' uninstalled module(s)!');
+    CLI::line(Color::str('You have ' . count($MDLIST_notInstalled) . ' uninstalled module(s)!', 'green'));
     $i = 0;
     foreach ($MDLIST_notInstalled as $tmpstr) {
         $i++;
@@ -21,7 +21,7 @@ if (count($MDLIST_notInstalled) > 0) {
 $MDLIST_removed = array();
 foreach ($GMModularFile->getInstalledSubmodulesNames() as $installed) {
     if (!in_array($installed, $GMModular->getAvailableSubmodules())) {
-        CLI::debug('Module ' . $installed . ' NOT available but is installed.');
+        CLI::debug(Color::str('Module ' . $installed . ' NOT available but is installed.', 'red'));
         $MDLIST_removed[] = $installed;
     }
 }
@@ -51,7 +51,7 @@ foreach ($GMModularFile->getInstalledSubmodulesNames() as $installed) {
 }
 
 if (count($MDLIST_notSynced) > 0) {
-    CLI::line('You have ' . count($MDLIST_notSynced) . ' out-of-sync module(s)!');
+    CLI::line(Color::str('You have ' . count($MDLIST_notSynced) . ' out-of-sync module(s)!', 'yellow'));
     $i = 0;
     foreach ($MDLIST_notSynced as $tmpstr) {
         $i++;
