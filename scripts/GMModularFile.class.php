@@ -68,7 +68,7 @@ class GMModularFile {
         if (DRYRUN) {
             CLI::notice('DRY-RUN IN EFFECT. ' . $this->file . ' has not been written to.');
         } else {
-            file_put_contents($this->file, serialize($this));
+            file_put_contents(realpath($this->file), serialize($this));
             CLI::debug('New data written to ' . $this->file . '');
         }
 
@@ -97,6 +97,15 @@ class GMModularFile {
     public function getInstalledSubmodules()
     {
         return $this->installedSubmodules;
+    }
+
+    /**
+     * Return an array with just names of installed stuffs
+     * @return array
+     */
+    public function getInstalledSubmodulesNames()
+    {
+        return array_keys($this->installedSubmodules);
     }
 
     /**
