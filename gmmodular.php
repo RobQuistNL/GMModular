@@ -26,7 +26,8 @@ if (false == $gmmfile) {
     CLI::verbose('Loading module file in to gmmodular instance');
     $GMModularFile = $GMModularFile->load();
 }
-
+var_dump($GMModularFile);
+die;
 //This one returns us with the following variables:
 $MDLIST_notInstalled = array();
 $MDLIST_removed = array();

@@ -105,7 +105,11 @@ class GMModularFile {
      */
     public function getInstalledSubmodulesNames()
     {
-        return array_keys($this->installedSubmodules);
+        $arr = array();
+        foreach ($this->installedSubmodules as $key => $value) {
+            $arr[] = $key;
+        }
+        return $arr;
     }
 
     /**
@@ -115,9 +119,9 @@ class GMModularFile {
      */
     public function installModule($submodule, $copied)
     {
-        $this->installedModules[$submodule->getName()]['files'] = $copied;
-        $this->installedModules[$submodule->getName()]['hash'] = $submodule->getHash();
-        $this->installedModules[$submodule->getName()]['date'] = time();
+        $this->installedSubmodules[$submodule->getName()]['files'] = $copied;
+        $this->installedSubmodules[$submodule->getName()]['hash'] = $submodule->getHash();
+        $this->installedSubmodules[$submodule->getName()]['date'] = time();
     }
 
     /**

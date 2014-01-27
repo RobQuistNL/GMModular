@@ -151,7 +151,7 @@ class GMModular {
         } else {
             copy(
                 realpath($this->getFile()),
-                pathinfo(realpath($this->getFile()), PATHINFO_DIRNAME) . DS . 'backup-' . time() . '.project.gmx'
+                pathinfo(realpath($this->getFile()), PATHINFO_DIRNAME) . DS  . time() . '.project.backup.gmx'
             );
         }
         CLI::debug('Saving new project file.');

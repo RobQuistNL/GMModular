@@ -1,6 +1,7 @@
 <?php
 //Find all not installed modules:
 $MDLIST_notInstalled = array();
+var_dump($GMModularFile->getInstalledSubmodulesNames());
 foreach ($GMModular->getAvailableSubmodules() as $available) {
     if (!in_array($available, $GMModularFile->getInstalledSubmodulesNames())) {
         CLI::debug('Module ' . $available . ' available but not in installed list.');
