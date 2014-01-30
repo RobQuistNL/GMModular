@@ -27,6 +27,11 @@ class Submodule {
     private $assets = array();
 
     /**
+     * @var array All the constants of this submodule
+     */
+    private $constants = array();
+
+    /**
      * @var string A unique hash made from all the files within this project to check on changes.
      */
     private $hash;
@@ -201,7 +206,15 @@ class Submodule {
             }
 
             if ($item->hasChildNodes() && $item->getAttribute('name') != '') {
-                $assets[] = new GMXAssetFolder($item->getAttribute('name'), $type, $this->getchildNodes($item->childNodes, $name, $type));
+                $assets[] = new GMXAssetFolder(
+                    $item->getAttribute('name'),
+                    $type,
+                    $this->getchildNodes(
+                        $item->childNodes,
+                        $name,
+                        $type
+                    )
+                );
             }
         }
         return $assets;
