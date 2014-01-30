@@ -50,8 +50,9 @@ function showMenu() {
     CLI::line('    ' . Color::str('1', 'cyan') . '. Install a module');
     CLI::line('    ' . Color::str('2', 'cyan') . '. Uninstall a module');
     CLI::line('    ' . Color::str('3', 'cyan') . '. Synchronize a module');
-    CLI::line('    ' . Color::str('4', 'cyan') . '. Quit');
-    return (int) CLI::getLine('Option number: [1-4]', '0')-1;
+    CLI::line('    ' . Color::str('4', 'cyan') . '. Re-index folders / modules');
+    CLI::line('    ' . Color::str('5', 'cyan') . '. Quit');
+    return (int) CLI::getLine('Option number: [1-5]', '5')-1;
 }
 
 function getMenuItem($name, $array) {

@@ -1,11 +1,9 @@
 <?php
 //@todo Implement a --clean function, to delete non-used asset files.
 //@todo make the checkModuleSync into a nice function
-//@todo general cleaning up
+//@todo general cleaning up of code
 //@todo datafiles / settings
 //@todo constants
-//@todo add manual reindex while in menu
-//@todo fix the --sync functionality to install && sync all modules
 
 require("./scripts/init.php");
 
@@ -144,7 +142,16 @@ if (SYNC) { //Synchronize all modules.
                 $MDLIST_notSynced = array();
                 require "./scripts/checkModuleSync.php";
                 break;
-            case 3: //Quit
+            case 3: //Reindex
+                CLI::line(Color::str('Rescanning all files and submodules...', 'black', 'blue'));
+                CLI::debug('Reindexing...');
+                $MDLIST_notInstalled = array();
+                $MDLIST_installed = array();
+                $MDLIST_removed = array();
+                $MDLIST_notSynced = array();
+                require "./scripts/checkModuleSync.php";
+                break;
+            case 4: //Quit
                 CLI::verbose('Quitting');
                 die;
                 break;
