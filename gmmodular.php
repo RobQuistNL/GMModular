@@ -44,29 +44,39 @@ require "./scripts/checkModuleSync.php";
 CLI::verbose('Modules checked. Checking user input...');
 //Now check the user input.
 if (SYNC) { //Synchronize all modules.
+    if (count($MDLIST_notInstalled) + count($MDLIST_removed) + count($MDLIST_notSynced) == 0) {
+        CLI::line(Color::str('All modules are already up to date.', 'black', 'green'));
+        die;
+    }
     CLI::debug('Complete automated synchronisation starting');
     CLI::line(Color::str('Automatic sync!', 'black', 'green'));
     CLI::line('Installing: ' . Color::str(count($MDLIST_notInstalled), 'green'));
     CLI::line('Removing: ' . Color::str(count($MDLIST_removed), 'green'));
     CLI::line('Sync: ' . Color::str(count($MDLIST_notSynced), 'green'));
 
-    CLI::line('Installing not installed...');
-    foreach ($MDLIST_notInstalled as $install) {
-        $GMModular->installModule($install, $GMModularFile);
+    if (count($MDLIST_notInstalled) >= 1) {
+        CLI::line('Installing not installed...');
+        foreach ($MDLIST_notInstalled as $install) {
+            $GMModular->installModule($install, $GMModularFile);
+        }
     }
 
-    CLI::line('Uninstalling removed...');
-    foreach ($MDLIST_removed as $remove) {
-        $GMModular->uninstallModule($GMModularFile->getInstalledModule($remove), $GMModularFile);
+    if (count($MDLIST_removed) >= 1) {
+        CLI::line('Uninstalling removed...');
+        foreach ($MDLIST_removed as $remove) {
+            $GMModular->uninstallModule($GMModularFile->getInstalledModule($remove), $GMModularFile);
+        }
     }
 
-    CLI::line('Syncing not synced...');
-    foreach ($MDLIST_notSynced as $remove) {
-        $GMModular->uninstallModule($GMModularFile->getInstalledModule($remove), $GMModularFile);
-    }
+    if (count($MDLIST_notSynced) >= 1) {
+        CLI::line('Syncing not synced...');
+        foreach ($MDLIST_notSynced as $remove) {
+            $GMModular->uninstallModule($GMModularFile->getInstalledModule($remove), $GMModularFile);
+        }
 
-    foreach ($MDLIST_notSynced as $install) {
-        $GMModular->installModule($install, $GMModularFile);
+        foreach ($MDLIST_notSynced as $install) {
+            $GMModular->installModule($install, $GMModularFile);
+        }
     }
 
     CLI::line(Color::str('All submodules successfully synchronized!', 'black', 'green'));
