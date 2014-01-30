@@ -359,9 +359,5 @@
     <option_winphone_tile_type>0</option_winphone_tile_type>
     <option_writeerrors>false</option_writeerrors>
   </Options>
-  <ConfigConstants>
-    <constants number="1">
-      <constant name="MOD2_CONSTANT">1234</constant>
-    </constants>
-  </ConfigConstants>
+  <ConfigConstants/>
 </Config>

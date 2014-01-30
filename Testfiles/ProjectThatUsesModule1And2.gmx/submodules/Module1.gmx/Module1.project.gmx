@@ -18,6 +18,10 @@
       <room>rooms\rm_mod1_room</room>
     </rooms>
   </rooms>
+  <constants number="2">
+    <constant name="MOD1_DOUBLE">789</constant>
+    <constant name="MOD1_CONSTANT">789</constant>
+  </constants>
   <help>
     <rtf>help.rtf</rtf>
   </help>
