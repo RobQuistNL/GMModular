@@ -42,6 +42,12 @@ How does this work?
 ===================
 This script copies all assets and asset-settings from your submodules into specific folders in your main project. It basically merges all projects, and keeps track of changes.
 
+NOTES
+=====
+1. When copying constants - we only copy the "All Configurations" constants from a submodule. We can't know which one to use if you have multiple configs. When creating something thats supposed to be used as a module, please put all the needed constants into the "All Configurations" part of constants.
+2. We will not copy any game config (from the config folder) - only all the assets you see in the left bar when you open GM.
+
+
 BE WARNED
 =========
 As this script edits your main project, just be sure to **ALWAYS HAVE A BACKUP**. Using version control software is the best way. The other way is to copy your project to DropBox, USB, DVD, CD, 3,5" floppies, Tape, ZIP-Drive... or whatever you'd like.

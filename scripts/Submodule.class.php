@@ -319,6 +319,15 @@ class Submodule {
                 GMXAsset::T_ROOM
             )
         ));
+
+        //Now load add the constants in
+        foreach ($xpath->query('/assets/constants/constant') as $const) {
+            $const = new DOMElement('as');
+            $this->constants[$const->getAttribute('name')] = $const->textContent;
+        }
+        echo 'Constants:';
+        var_dump($this->constants);
+
     }
 
     /**
