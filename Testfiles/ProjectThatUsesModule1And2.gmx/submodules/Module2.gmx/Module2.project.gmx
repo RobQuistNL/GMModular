@@ -69,6 +69,9 @@
   <rooms name="rooms">
     <room>rooms\rm_mod2</room>
   </rooms>
+  <constants number="1">
+    <constant name="MOD2_CONSTANT">Hi there --- &lt; will &gt; this work? &gt;&lt;</constant>
+  </constants>
   <help>
     <rtf>help.rtf</rtf>
   </help>

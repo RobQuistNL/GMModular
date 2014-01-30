@@ -100,7 +100,7 @@ class CLI {
      */
     public static function notice($string = '') {
         self::line(
-            Color::str('NOTICE: ' . $string, "light_cyan", "")
+            Color::str('NOTICE: ' . $string, "cyan", "")
         );
     }
 
@@ -111,7 +111,7 @@ class CLI {
     public static function debug($string = '') {
         if (DEBUG) {
             self::line(
-                Color::str('DEBUG: ' . $string, "cyan", "")
+                Color::str('DEBUG: ' . $string, "light_cyan", "")
             );
         }
     }

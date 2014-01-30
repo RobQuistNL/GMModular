@@ -17,6 +17,11 @@ class GMModular {
     private $dom = null;
 
     /**
+     * @var constants null
+     */
+    private $constants = null;
+
+    /**
      * @var The projects rootfolder.
      */
     private $projectRoot;
@@ -56,6 +61,22 @@ class GMModular {
             }
         }
         return $doubleAssets;
+    }
+
+    /**
+     * Check if the given array has doubles. If so, return them.
+     * @param array $constantArray
+     * @return bool
+     */
+    public function checkDoubleConstants($constantArray)
+    {
+        $doubleConstants = array();
+        foreach ($constantArray as $constant => $value) {
+            if (array_key_exists($constant, $this->getConstants())) {
+                $doubleConstants[] = $constant;
+            }
+        }
+        return $doubleConstants;
     }
 
     /**
@@ -100,6 +121,32 @@ class GMModular {
         foreach($query as $node) {
             CLI::verbose('Removing node at line ' . $node->getLineNo());
             $node->parentNode->removeChild($node);
+        }
+
+        CLI::debug('Removing old constants');
+        $newConstants = $this->getConstants();
+        foreach ($submodule->getConstants() as $oldConst => $oldVal) {
+            unset($newConstants[$oldConst]);
+        }
+
+        CLI::debug('Removing old constants from root project file');
+        $xpath = new DOMXPath($this->getDom());
+        $parentNode = $this->getDom()->getElementsByTagName('assets')->item(0);
+        $query = $xpath->query('/assets/constants');
+        foreach($query as $node) {
+            CLI::verbose('Removing node at line ' . $node->getLineNo());
+            $node->parentNode->removeChild($node);
+        }
+
+        CLI::verbose('Creating new constant elements');
+        $newConstantsElement = $this->getDom()->createElement('constants');
+        $newConstantsElement->setAttribute('number', count($newConstants));
+        $parentNode->appendChild($newConstantsElement);
+
+        foreach ($newConstants as $ncName => $ncValue) {
+            $newConstantElement = $this->getDom()->createElement('constant', $ncValue);
+            $newConstantElement->setAttribute('name', $ncName);
+            $newConstantsElement->appendChild($newConstantElement);
         }
         $xml = $this->getDom()->saveXML();
         CLI::debug('New XML file generated.');
@@ -163,6 +210,11 @@ class GMModular {
             return false;
         }
 
+        if ($this->runDoubleConstantCheck($submodule->getConstants()) == false) { //Check for double files / ask user what to do.
+            //False means, don't continue.
+            return false;
+        }
+
         /*
          * Loop through all the assets in this submodule and add them to the DOMDocument.
          */
@@ -192,7 +244,30 @@ class GMModular {
                 throw new Exception('FOUND A GENERAL ASSET ('.$asset['node']->getLocation().') ON 0-LEVEL! Can\'t be right!');
             }
         }
+
+        CLI::debug('Combining all constants');
+        $newConstants = array_merge($this->getConstants(), $submodule->getConstants());
+
+        CLI::debug('Removing old constants from root project file');
+        $xpath = new DOMXPath($this->getDom());
+        $query = $xpath->query('/assets/constants');
+        foreach($query as $node) {
+            CLI::verbose('Removing node at line ' . $node->getLineNo());
+            $node->parentNode->removeChild($node);
+        }
+
+        $newConstantsElement = $this->getDom()->createElement('constants');
+        $newConstantsElement->setAttribute('number', count($newConstants));
+        $parentNode->appendChild($newConstantsElement);
+
+        foreach ($newConstants as $ncName => $ncValue) {
+            $newConstantElement = $this->getDom()->createElement('constant', $ncValue);
+            $newConstantElement->setAttribute('name', $ncName);
+            $newConstantsElement->appendChild($newConstantElement);
+        }
+
         $xml = $this->getDom()->saveXML();
+
         CLI::debug('New XML file generated.');
 
         CLI::debug('Copying game asset files.');
@@ -279,6 +354,37 @@ class GMModular {
             }
         }
         CLI::debug('No conflicting / double asset names have been found. Continuing script!');
+        return true; //Default, no doubles have been found so we can continue.
+    }
+
+    /**
+     * Check for double constant names, and if they occur, ask the user what to do.
+     * @return bool
+     */
+    public function runDoubleConstantCheck($submoduleConstants)
+    {
+        CLI::debug('Starting double constant check');
+        $doubleConstants = $this->checkDoubleConstants($submoduleConstants);
+        if (count($doubleConstants) >= 1) {
+            CLI::warning('Double constant names have been found:');
+            foreach ($doubleConstants as $doubleName) {
+                CLI::warning('    ' . $doubleName);
+            }
+            CLI::warning('You can continue, but existing constants WILL BE OVERWRITTEN!');
+            if (CLI::getYesNo('Overwrite ' . count($doubleConstants) . ' game constants?', 'n') == false) {
+                CLI::notice('Not overwriting game constants.');
+                if (DRYRUN) {
+                    CLI::notice('Script will continue because of --dryrun tag!');
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                CLI::warning('Overwriting game constants!');
+                return true;
+            }
+        }
+        CLI::debug('No conflicting / double constant names have been found. Continuing script!');
         return true; //Default, no doubles have been found so we can continue.
     }
 
@@ -535,6 +641,31 @@ class GMModular {
         }
 
         return $doc;
+    }
+
+    /**
+     * @return array Constants
+     */
+    public function getConstants()
+    {
+        if (null === $this->constants) {
+            $this->loadConstants();
+        }
+        return $this->constants;
+    }
+
+    /**
+     * Load in all constants from the DOM.
+     * @return void
+     */
+    public function loadConstants()
+    {
+        $xpath = new DOMXPath($this->getDom());
+        //Now load add the constants in
+        $this->constants = array();
+        foreach ($xpath->query('/assets/constants/constant') as $const) {
+            $this->constants[$const->getAttribute('name')] = $const->textContent;
+        }
     }
 
 }

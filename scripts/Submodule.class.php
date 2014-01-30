@@ -186,10 +186,23 @@ class Submodule {
     public function getAssets()
     {
         if (null == $this->assets) {
-            CLI::debug('Parsing / lazy loading assets...');
+            CLI::debug('Parsing / lazy loading assets + constants...');
             $this->parseAssets();
         }
         return $this->assets;
+    }
+
+    /**
+     * Get / lazy-load the constants from the DOMDocument
+     * @return mixed
+     */
+    public function getConstants()
+    {
+        if (null == $this->constants) {
+            CLI::debug('Parsing / lazy loading assets + constants...');
+            $this->parseAssets();
+        }
+        return $this->constants;
     }
 
     /**
@@ -322,12 +335,8 @@ class Submodule {
 
         //Now load add the constants in
         foreach ($xpath->query('/assets/constants/constant') as $const) {
-            $const = new DOMElement('as');
             $this->constants[$const->getAttribute('name')] = $const->textContent;
         }
-        echo 'Constants:';
-        var_dump($this->constants);
-
     }
 
     /**
