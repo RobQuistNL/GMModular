@@ -3,6 +3,7 @@
 //@todo make the checkModuleSync into a nice function
 //@todo general cleaning up of code
 //@todo datafiles / settings
+//@todo shader types
 
 //@todo UNITTEST constants
 //@todo UNITTEST XML stuff
@@ -41,6 +42,10 @@ $MDLIST_installed = array();
 $MDLIST_removed = array();
 $MDLIST_notSynced = array();
 require "./scripts/checkModuleSync.php";
+
+$GMModular->dumpAssets($MDLIST_notInstalled[1]->getAssets());
+$GMModular->installModule($MDLIST_notInstalled[1], $GMModularFile);
+die;
 
 CLI::verbose('Modules checked. Checking user input...');
 //Now check the user input.

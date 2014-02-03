@@ -234,11 +234,14 @@ class GMModular {
                     }
 
                     //Create our submodule folder in there and add the assets
-                    $newAsset = $this->getDom()->createElement($this->getParentNodeName($asset->type));
-                    $newAsset->setAttribute('name', $submodule->getName());
-                    $this->appendAssets($asset->children, $newAsset);
-
-                    $instanceType->appendChild($newAsset);
+                    if ($asset->type != GMXAsset::T_DATAFILE) {
+                        $newAsset = $this->getDom()->createElement($this->getParentNodeName($asset->type));
+                        $newAsset->setAttribute('name', $submodule->getName());
+                        $this->appendAssets($asset->children, $newAsset);
+                        $instanceType->appendChild($newAsset);
+                    } else {
+                        $this->appendAssets($asset->children, $instanceType);
+                    }
                 }
             } else {
                 throw new Exception('FOUND A GENERAL ASSET ('.$asset['node']->getLocation().') ON 0-LEVEL! Can\'t be right!');
@@ -269,7 +272,8 @@ class GMModular {
         $xml = $this->getDom()->saveXML();
 
         CLI::debug('New XML file generated.');
-
+        echo $xml;
+        die;
         CLI::debug('Copying game asset files.');
         $copied = $this->copyAssetFiles($submoduleAssets, $submodule->getFilepath());
         CLI::notice('Copied ' . count($copied) . ' files.');
@@ -401,8 +405,18 @@ class GMModular {
                 $newAsset->setAttribute('name', $asset->name);
                 $this->appendAssets($asset->children, $newAsset);
             } else {
-                $newAsset = new DOMElement($this->getAssetNodeName($asset->getType()), $asset->getLocation());
-                $parentNode->appendChild($newAsset);
+                if ($asset->getType() != GMXAsset::T_DATAFILE) {
+                    $newAsset = new DOMElement($this->getAssetNodeName($asset->getType()), $asset->getLocation());
+                    $parentNode->appendChild($newAsset);
+                } else {
+                    //$newAsset = new DOMElement($this->getAssetNodeName($asset->getType()));
+                    //$parentNode->appendChild($newAsset);
+                    $clone = $asset->getNode()->cloneNode(1);
+                    $parentNode->appendChild($parentNode->ownerDocument->importNode($clone, 1));
+
+                    //$newAsset->appendChild($newNodes);
+                }
+
             }
         }
     }

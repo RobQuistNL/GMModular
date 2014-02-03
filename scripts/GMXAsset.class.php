@@ -54,9 +54,15 @@ class GMXAsset {
     public function getLocation()
     {
         $this->checkNode();
-        $return = trim($this->node->textContent); //if there are child nodes (like folders)
-        $return = explode("\r", $return);
-        $return = trim($return[0]);
+        if ($this->getType() != self::T_DATAFILE) {
+            $return = trim($this->node->textContent); //if there are child nodes (like folders)
+            $return = explode("\r", $return);
+            $return = trim($return[0]);
+        } else {
+            $return = trim($this->node->getElementsByTagName('filename')->item(0)->textContent);
+            $return = explode("\r", $return);
+            $return = trim($return[0]);
+        }
         return $return;
     }
 

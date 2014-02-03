@@ -222,7 +222,7 @@ class Submodule {
                 $assets[] = new GMXAssetFolder(
                     $item->getAttribute('name'),
                     $type,
-                    $this->getchildNodes(
+                    $this->getChildNodes(
                         $item->childNodes,
                         $name,
                         $type
@@ -330,6 +330,16 @@ class Submodule {
                 $xpath->query('/assets/rooms/*'),
                 'room',
                 GMXAsset::T_ROOM
+            )
+        ));
+
+        $this->addAsset(new GMXAssetFolder(
+            'datafiles',
+            GMXAsset::T_DATAFILE,
+            $this->getChildNodes(
+                $xpath->query('/assets/datafiles/*'),
+                'datafile',
+                GMXAsset::T_DATAFILE
             )
         ));
 
