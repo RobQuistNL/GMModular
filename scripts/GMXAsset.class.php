@@ -59,9 +59,23 @@ class GMXAsset {
             $return = explode("\r", $return);
             $return = trim($return[0]);
         } else {
+            $prepend[] = 'datafiles';
+            $parent = $this->node->parentNode;
+            while ($parent !== false ) {
+                if ($parent->tagName == 'datafiles') {
+                    if ($parent->getAttribute('name') == 'datafiles') {
+                        $parent = false;
+                    } else {
+                        $prepend[] = $parent->getAttribute('name');
+                        $parent = $parent->parentNode;
+                    }
+                }
+            }
+
             $return = trim($this->node->getElementsByTagName('filename')->item(0)->textContent);
             $return = explode("\r", $return);
             $return = trim($return[0]);
+            $return = implode(DS, $prepend) . DS . $return;
         }
         return $return;
     }

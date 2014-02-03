@@ -123,6 +123,16 @@ class GMModular {
             $node->parentNode->removeChild($node);
         }
 
+        CLI::debug('Removing module data files out of root project file...');
+        $xpath = new DOMXPath($this->getDom());
+        $query = $xpath->query('/assets/datafiles/*[@name="' . $submodule->getName().'"]');
+        $dom = $this->getDom();
+        foreach($query as $node) {
+            CLI::verbose('Removing node at line ' . $node->getLineNo());
+            $node->parentNode->removeChild($node);
+        }
+
+        die;
         CLI::debug('Removing old constants');
         $newConstants = $this->getConstants();
         foreach ($submodule->getConstants() as $oldConst => $oldVal) {
@@ -272,8 +282,7 @@ class GMModular {
         $xml = $this->getDom()->saveXML();
 
         CLI::debug('New XML file generated.');
-        echo $xml;
-        die;
+
         CLI::debug('Copying game asset files.');
         $copied = $this->copyAssetFiles($submoduleAssets, $submodule->getFilepath());
         CLI::notice('Copied ' . count($copied) . ' files.');

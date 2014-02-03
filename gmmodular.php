@@ -43,9 +43,9 @@ $MDLIST_removed = array();
 $MDLIST_notSynced = array();
 require "./scripts/checkModuleSync.php";
 
-$GMModular->dumpAssets($MDLIST_notInstalled[1]->getAssets());
-$GMModular->installModule($MDLIST_notInstalled[1], $GMModularFile);
-die;
+//$GMModular->dumpAssets($MDLIST_notInstalled[1]->getAssets());
+//$GMModular->installModule($MDLIST_notInstalled[1], $GMModularFile);
+//die;
 
 CLI::verbose('Modules checked. Checking user input...');
 //Now check the user input.
