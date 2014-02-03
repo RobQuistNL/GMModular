@@ -163,10 +163,15 @@ class GMModular {
 
         CLI::debug('Removing game asset files.');
         foreach ($submoduleArray['files'] as $file) {
+            //Check if there's a datafile in here. If so, remove that one as well :D
+            if (strstr($file, 'datafiles') === 0) {
+                echo 'FOUND DATAFILE:';
+            }
+            echo $file . PHP_EOL;
+
             if (DRYRUN) {
                 CLI::notice('DRYRUN: delete ' . $file);
             } else {
-
                 unlink(str_replace('\\', DS, realpath($this->getProjectRoot()) . DS . $file));
             }
         }

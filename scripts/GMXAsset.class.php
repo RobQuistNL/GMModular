@@ -152,6 +152,10 @@ class GMXAsset {
             $source = str_replace('\\', DS, realpath($submoduleLocation) . DS . $file);
             $target = str_replace('\\', DS, realpath($projectRoot) . DS . $file);
             if (DRYRUN) {
+                $targetFolder = pathinfo($target, PATHINFO_DIRNAME);
+                if (!is_dir($targetFolder)) {
+                    CLI::notice('DRYRUN: Creating folder; ' . $targetFolder);
+                }
                 CLI::notice('DRYRUN: Copy ' . $source . ' -> ' . $target);
             } else {
                 CLI::verbose('Copying ' . $file . '...');
