@@ -145,10 +145,10 @@ class GMModular {
         $dom = $this->getDom();
         foreach($query as $node) {
             CLI::verbose('Removing node at line ' . $node->getLineNo());
-            if (is_object($node)) {
+            if (is_object($node->parentNode) && is_object($node)) {
                 $node->parentNode->removeChild($node);
             } else {
-                CLI::debug('Not an object node;' . $node);
+                CLI::debug('Not an object node! ' . __FILE__ . ':' . __LINE__);
             }
         }
 
