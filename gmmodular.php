@@ -2,8 +2,12 @@
 //@todo Implement a --clean function, to delete non-used asset files.
 //@todo make the checkModuleSync into a nice function
 //@todo general cleaning up of code
-//@todo datafiles / settings
 //@todo shader types
+//@todo Fix bug when adding / removing overlapping datafile folders in GMX file
+//@todo Fix bug where constants are not being reindexed after install / update
+//@todo fix bug when after a few uninstall / installs i get fatal errors on the GMX Document;
+// PHP Fatal error:  Call to a member function removeChild() on a non-object in /cygdrive/g/GMSTUDIO/GIT/GMModular/scripts/GMModular.class.php on line 148
+
 
 //@todo UNITTEST constants
 //@todo UNITTEST XML stuff
