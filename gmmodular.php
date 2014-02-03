@@ -3,7 +3,10 @@
 //@todo make the checkModuleSync into a nice function
 //@todo general cleaning up of code
 //@todo datafiles / settings
-//@todo constants
+
+//@todo UNITTEST constants
+//@todo UNITTEST XML stuff
+//@todo UNITTEST general stuff / everything
 
 require("./scripts/init.php");
 

@@ -65,6 +65,12 @@
   <rooms name="rooms">
     <room>rooms\rm_mod2</room>
   </rooms>
+  <constants number="4">
+    <constant name="CONST_1">VAL_1</constant>
+    <constant name="CONST_2">VAL_2</constant>
+    <constant name="CONST_3">VAL_3</constant>
+    <constant name="CONST_4">VAL_4</constant>
+  </constants>
   <help>
     <rtf>help.rtf</rtf>
   </help>
