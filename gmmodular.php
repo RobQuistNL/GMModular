@@ -4,10 +4,6 @@
 //@todo general cleaning up of code
 //@todo shader types
 //@todo Fix bug when adding / removing overlapping datafile folders in GMX file
-//@todo Fix bug where constants are not being reindexed after install / update
-//@todo fix bug when after a few uninstall / installs i get fatal errors on the GMX Document;
-// PHP Fatal error:  Call to a member function removeChild() on a non-object in /cygdrive/g/GMSTUDIO/GIT/GMModular/scripts/GMModular.class.php on line 148
-
 
 //@todo UNITTEST constants
 //@todo UNITTEST XML stuff
@@ -47,10 +43,6 @@ $MDLIST_removed = array();
 $MDLIST_notSynced = array();
 require "./scripts/checkModuleSync.php";
 
-//$GMModular->dumpAssets($MDLIST_notInstalled[1]->getAssets());
-//$GMModular->installModule($MDLIST_notInstalled[1], $GMModularFile);
-//die;
-
 CLI::verbose('Modules checked. Checking user input...');
 //Now check the user input.
 if (SYNC) { //Synchronize all modules.
@@ -64,13 +56,6 @@ if (SYNC) { //Synchronize all modules.
     CLI::line('Removing: ' . Color::str(count($MDLIST_removed), 'green'));
     CLI::line('Sync: ' . Color::str(count($MDLIST_notSynced), 'green'));
 
-    if (count($MDLIST_notInstalled) >= 1) {
-        CLI::line('Installing not installed...');
-        foreach ($MDLIST_notInstalled as $install) {
-            $GMModular->installModule($install, $GMModularFile);
-        }
-    }
-
     if (count($MDLIST_removed) >= 1) {
         CLI::line('Uninstalling removed...');
         foreach ($MDLIST_removed as $remove) {
@@ -79,12 +64,22 @@ if (SYNC) { //Synchronize all modules.
     }
 
     if (count($MDLIST_notSynced) >= 1) {
-        CLI::line('Syncing not synced...');
+        CLI::line('Removing not synced...');
         foreach ($MDLIST_notSynced as $remove) {
             $GMModular->uninstallModule($GMModularFile->getInstalledModule($remove), $GMModularFile);
         }
+    }
 
-        foreach ($MDLIST_notSynced as $install) {
+    $MDLIST_notInstalled = array();
+    $MDLIST_installed = array();
+    $MDLIST_removed = array();
+    $MDLIST_notSynced = array();
+    require "./scripts/checkModuleSync.php";
+    $GMModular->loadConstants();
+
+    if (count($MDLIST_notInstalled) >= 1) {
+        CLI::line('Installing not installed...');
+        foreach ($MDLIST_notInstalled as $install) {
             $GMModular->installModule($install, $GMModularFile);
         }
     }
@@ -108,6 +103,7 @@ if (SYNC) { //Synchronize all modules.
                 $MDLIST_removed = array();
                 $MDLIST_notSynced = array();
                 require "./scripts/checkModuleSync.php";
+                $GMModular->loadConstants();
 
                 break;
             case 1: //Uninstall
@@ -123,6 +119,7 @@ if (SYNC) { //Synchronize all modules.
                 $MDLIST_removed = array();
                 $MDLIST_notSynced = array();
                 require "./scripts/checkModuleSync.php";
+                $GMModular->loadConstants();
                 break;
             case 2: //Synchronize
                 CLI::verbose('Entering sync menu');
@@ -139,6 +136,7 @@ if (SYNC) { //Synchronize all modules.
                 $MDLIST_removed = array();
                 $MDLIST_notSynced = array();
                 require "./scripts/checkModuleSync.php";
+                $GMModular->loadConstants();
 
                 foreach ($MDLIST_notInstalled as $test) {
                     if ($test->__toString() == $moduleName) {
@@ -153,6 +151,7 @@ if (SYNC) { //Synchronize all modules.
                 $MDLIST_removed = array();
                 $MDLIST_notSynced = array();
                 require "./scripts/checkModuleSync.php";
+                $GMModular->loadConstants();
                 break;
             case 3: //Reindex
                 CLI::line(Color::str('Rescanning all files and submodules...', 'black', 'blue'));
@@ -162,6 +161,7 @@ if (SYNC) { //Synchronize all modules.
                 $MDLIST_removed = array();
                 $MDLIST_notSynced = array();
                 require "./scripts/checkModuleSync.php";
+                $GMModular->loadConstants();
                 break;
             case 4: //Quit
                 CLI::verbose('Quitting');
