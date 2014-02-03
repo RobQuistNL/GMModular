@@ -123,16 +123,31 @@ class GMModular {
             $node->parentNode->removeChild($node);
         }
 
-        CLI::debug('Removing module data files out of root project file...');
+        /**
+         * Also remove all datafiles that we added
+         */
+        CLI::debug('Removing module datafiles out of root project file...');
         $xpath = new DOMXPath($this->getDom());
-        $query = $xpath->query('/assets/datafiles/*[@name="' . $submodule->getName().'"]');
+        foreach ($submoduleArray['files'] as $file) {
+            if (strpos($file, 'datafiles') === 0) {
+                CLI::verbose('Found datafile: ' . $file);
+                $a = explode(DS, $file);
+                $query = '//datafile/name[text()="' .  $a[count($a)-1] . '"]';
+                $query = $xpath->query($query);
+                foreach ($query as $foundNode) {
+                    $dataNode = $foundNode->parentNode;
+                    CLI::verbose('Removing datafile node at line ' . $foundNode->parentNode->getLineNo());
+                    $dataNode->parentNode->removeChild($dataNode);
+                }
+            }
+        }
+
         $dom = $this->getDom();
         foreach($query as $node) {
             CLI::verbose('Removing node at line ' . $node->getLineNo());
             $node->parentNode->removeChild($node);
         }
 
-        die;
         CLI::debug('Removing old constants');
         $newConstants = $this->getConstants();
         foreach ($submodule->getConstants() as $oldConst => $oldVal) {
@@ -163,12 +178,6 @@ class GMModular {
 
         CLI::debug('Removing game asset files.');
         foreach ($submoduleArray['files'] as $file) {
-            //Check if there's a datafile in here. If so, remove that one as well :D
-            if (strstr($file, 'datafiles') === 0) {
-                echo 'FOUND DATAFILE:';
-            }
-            echo $file . PHP_EOL;
-
             if (DRYRUN) {
                 CLI::notice('DRYRUN: delete ' . $file);
             } else {
