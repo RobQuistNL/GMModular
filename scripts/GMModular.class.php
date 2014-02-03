@@ -145,7 +145,11 @@ class GMModular {
         $dom = $this->getDom();
         foreach($query as $node) {
             CLI::verbose('Removing node at line ' . $node->getLineNo());
-            $node->parentNode->removeChild($node);
+            if (is_object($node)) {
+                $node->parentNode->removeChild($node);
+            } else {
+                CLI::debug('Not an object node;' . $node);
+            }
         }
 
         CLI::debug('Removing old constants');
