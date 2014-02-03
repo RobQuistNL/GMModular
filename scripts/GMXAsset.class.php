@@ -72,7 +72,7 @@ class GMXAsset {
                 }
             }
 
-            $return = trim($this->node->getElementsByTagName('filename')->item(0)->textContent);
+            $return = trim($this->node->getElementsByTagName('name')->item(0)->textContent);
             $return = explode("\r", $return);
             $return = trim($return[0]);
             $return = implode(DS, $prepend) . DS . $return;
@@ -158,12 +158,12 @@ class GMXAsset {
                 }
                 CLI::notice('DRYRUN: Copy ' . $source . ' -> ' . $target);
             } else {
-                CLI::verbose('Copying ' . $file . '...');
                 $targetFolder = pathinfo($target, PATHINFO_DIRNAME);
                 if (!is_dir($targetFolder)) {
                     CLI::verbose('Creating folder; ' . $targetFolder);
                     mkdir($targetFolder);
                 }
+                CLI::verbose('Copying ' . $file . '...');
                 copy($source, $target);
             }
         }
