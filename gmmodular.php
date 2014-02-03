@@ -4,6 +4,8 @@
 //@todo general cleaning up of code
 //@todo shader types
 //@todo Fix bug when adding / removing overlapping datafile folders in GMX file
+//@todo if a datafile folder already exists, then add the files into that folder
+//@todo if a datafile folder is empty after an uninstall, then remove the folder (low prio)
 
 //@todo UNITTEST constants
 //@todo UNITTEST XML stuff
