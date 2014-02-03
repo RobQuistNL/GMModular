@@ -256,6 +256,7 @@ class GMModular {
                         $instanceType->appendChild($newAsset);
                     } else {
                         $this->appendAssets($asset->children, $instanceType);
+                        $instanceType->setAttribute('number', 9999999); //That works...
                     }
                 }
             } else {
@@ -418,17 +419,17 @@ class GMModular {
                 $parentNode->appendChild($newAsset);
                 $newAsset->setAttribute('name', $asset->name);
                 $this->appendAssets($asset->children, $newAsset);
+                if ($asset->type == GMXAsset::T_DATAFILE) {
+                    $newAsset->setAttribute('number', 99999);
+                }
             } else {
                 if ($asset->getType() != GMXAsset::T_DATAFILE) {
                     $newAsset = new DOMElement($this->getAssetNodeName($asset->getType()), $asset->getLocation());
                     $parentNode->appendChild($newAsset);
                 } else {
-                    //$newAsset = new DOMElement($this->getAssetNodeName($asset->getType()));
-                    //$parentNode->appendChild($newAsset);
                     $clone = $asset->getNode()->cloneNode(1);
-                    $parentNode->appendChild($parentNode->ownerDocument->importNode($clone, 1));
-
-                    //$newAsset->appendChild($newNodes);
+                    $imported = $parentNode->ownerDocument->importNode($clone, 1);
+                    $parentNode->appendChild($imported);
                 }
 
             }
