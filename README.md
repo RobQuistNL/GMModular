@@ -46,7 +46,7 @@ NOTES
 =====
 1. When copying constants - we only copy the "All Configurations" constants from a submodule. We can't know which one to use if you have multiple configs. When creating something thats supposed to be used as a module, please put all the needed constants into the "All Configurations" part of constants.
 2. We will not copy any game config (from the config folder) - only all the assets you see in the left bar when you open GM.
-
+3. You can leave the GM:S IDE opened while installing the module - but it can cause broken files (i've seen this in rare cases) - so, just in case, its better to just close your GM:S window.
 
 BE WARNED
 =========
