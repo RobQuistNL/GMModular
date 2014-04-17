@@ -1,4 +1,4 @@
-#!php
+#!/usr/bin/env php
 <?php
 //@todo Implement a --clean function, to delete non-used asset files.
 //@todo make the checkModuleSync into a nice function
