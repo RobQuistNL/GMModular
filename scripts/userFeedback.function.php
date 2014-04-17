@@ -31,7 +31,7 @@ function showUsage($wrongUsage = true) {
  * Displays welcome message
  */
 function showWelcome() {
-    CLI::line('Welcome to the ' . Color::str('GM','green') . Color::str('Modular', 'light_blue') . '  application.');
+    CLI::line('Welcome to the ' . Color::str('GM','green') . Color::str('Modular', 'light_blue') . ' application.');
     CLI::line(Color::str('version ' . VERSION, 'brown'));
     CLI::line(Color::str('GMModular by Rob Quist - Licensed under Apache2 License', 'brown'));
     CLI::line();
