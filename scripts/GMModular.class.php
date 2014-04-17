@@ -39,7 +39,7 @@ class GMModular {
     /**
      * Check if the given asset file exists. A Assetfolder will always return false.
      * @param $assetFile
-     * @return bool
+     * @return array|bool
      */
     public function checkDoubleAssets($assetFile)
     {
@@ -352,7 +352,7 @@ class GMModular {
             } else {
                 CLI::warning('Unknown asset file found in submodule. We will try to continue.');
                 CLI::warning('Asset file dump:');
-                var_dump($assetFile);
+                CLI::warning(var_export($assetFile));
             }
         }
         return $copied;

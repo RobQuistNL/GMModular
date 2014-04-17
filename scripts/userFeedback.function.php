@@ -8,15 +8,15 @@ function showUsage($wrongUsage = true) {
         cli::line('------------');
     }
     cli::line('How to use:');
-    cli::line(' gmmodular.php [path-to-root-project] [options]');
+    cli::line(' ./gmmodular.php project/path/ [options]');
     cli::line('   Example: php gmmodular.php G:/my/gm/folder.gmx -d -q');
     cli::line();
     cli::line(' Options:');
-    cli::line('     -d                   Debug');
+    cli::line('     -d                   Debug messages');
     cli::line('     -D                   PHP-Debug (don\'t suppress PHP errors)');
-    cli::line('     -v                   Be verbose (includes -d and -D)');
+    cli::line('     -v                   Be verbose (implies -d and -D)');
     cli::line('     --dry-run            Do not touch files');
-    cli::line('     --dryrun             Do not touch files');
+    cli::line('     --dryrun             Synonym for --dry-run');
     cli::line('     --no-color           Do not use colours in feedback');
     cli::line('     --sync               Synchronize all. This;');
     cli::line('          - Installs all new found modules');
