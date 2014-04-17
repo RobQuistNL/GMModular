@@ -38,9 +38,33 @@ Adding submodules
 =================
 If you want to add submodules to your game, you should create a folder names "submodules" in the project root. (The same level as the .gmx file). In that folder you can put other project folders. You can simply copy them, but I suggest that you use "git submodules" for this. Ofcourse you could also use composer or some other tool of choise. As long as all the project files are a 1 on 1 copy of the original Game-Maker source.
 
+After throwing your project files into the submodules directory (like this;)
+
+
+     + MyProject.gmx
+      \_ sprites
+      |_ scripts
+      |_ submodules
+        |_ Shaderpack.gmx
+          |_ Shaderpack.project.gmx (file)
+        |_ GMOculus.gmx
+          |_ GMOculus.project.gmx (file)
+      |_ MyProject.project.gmx (file)
+
+You start up the app;
+``./gmmodular.php /path/to/Myproject.gmx/``
+
+Now you're in the menu. Choose "install" and then choose the modules you want to install.
+You are now done! The modules will be included in your main project and you're ready to use them.
+
+
 How does this work?
 ===================
 This script copies all assets and asset-settings from your submodules into specific folders in your main project. It basically merges all projects, and keeps track of changes.
+
+Creating submodules
+===================
+As this combines everything... I suggest you prefix all your game assets if you want others to use them. Don't use names like sprite0, or obj_controller - prefix your object with something related to your module, eg;
 
 NOTES
 =====
