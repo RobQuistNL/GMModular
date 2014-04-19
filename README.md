@@ -57,6 +57,7 @@ You start up the app;
 Now you're in the menu. Choose "install" and then choose the modules you want to install.
 You are now done! The modules will be included in your main project and you're ready to use them.
 
+Updating a submodule? Just throw the version you want inside the submodule folder (overwriting the old version) - or use git - and then rerun GMModular (with --sync it will install all modules and sync all modules, thatll go on auto-pilot)
 
 How does this work?
 ===================
