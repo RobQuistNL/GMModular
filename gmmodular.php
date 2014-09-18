@@ -1,5 +1,7 @@
 #!/usr/bin/env php
 <?php
+set_include_path(dirname(__FILE__) . DIRECTORY_SEPARATOR);
+
 //@todo Implement a --clean function, to delete non-used asset files.
 //@todo make the checkModuleSync into a nice function
 //@todo general cleaning up of code
@@ -12,17 +14,17 @@
 //@todo UNITTEST XML stuff
 //@todo UNITTEST general stuff / everything
 
-require("./scripts/init.php");
+require("scripts" . DIRECTORY_SEPARATOR . "init.php");
 
 //Check args
-require "./scripts/checkArguments.php";
+require "scripts" . DIRECTORY_SEPARATOR . "checkArguments.php";
 
 showWelcome();
 
 $GMModular = new GMModular();
 $GMModular->setProjectRoot($projectRoot);
 
-require "./scripts/setupPaths.php";
+require "scripts" . DIRECTORY_SEPARATOR . "setupPaths.php";
 
 $GMModular->setFile($projectFile);
 $GMModular->setSubmoduleFolder($submoduleFolder);
